@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampEase - Home</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="app home-layout">
+      <div class="topbar home-topbar">
+  <button class="icon-btn">☰</button>
+  <div class="brand">CampEase</div>
+  <div class="home-topbar-actions">
+    <button class="icon-btn notification-icon-btn" onclick="window.location.href='notifications.html'">
+      🔔
+      <span class="notification-badge"></span>
+    </button>
+    <button class="icon-btn" onclick="window.location.href='profile.html'">👤</button>
+  </div>
+</div>
+
+<div class="card hero-card">
+  <div class="section-label">Welcome</div>
+  <h2 class="title-lg">Hello, <span id="userName">Explorer</span></h2>
+
+ <div class="section-card" style="background: #EDE7DA; margin-top: 12px; margin-bottom: 0;">
+  <div class="section-label">Current Conditions</div>
+  <div class="row-between">
+    <div>
+      <div class="title-md" id="homeWeatherLocation">Featured Campsite</div>
+      <div class="meta" id="homeWeatherMeta">Loading weather...</div>
+    </div>
+    <div style="font-size: 30px;" id="homeWeatherIcon">🌤️</div>
+  </div>
+</div>
+</div>
+
+      <div class="chips" id="categoryChips">
+        <button class="chip active" data-category="">All</button>
+        <button class="chip" data-category="desert">Dunes</button>
+        <button class="chip" data-category="mountain">Mountain</button>
+        <button class="chip" data-category="wadi">Wadi</button>
+        <button class="chip" data-category="beach">Beach</button>
+      </div>
+
+      <div class="search-row">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search campsites..." />
+        <button class="filter-btn" id="openFilterBtn">Filter</button>
+      </div>
+
+      <div class="card section-card">
+        <div class="section-label">Quick Action</div>
+        <h3 class="title-lg">Find your first camp</h3>
+        <p class="subtitle">Discover curated locations across the Emirates designed for serenity and adventure.</p>
+        <button class="btn btn-primary" onclick="loadCampsites()">Start Exploring</button>
+      </div>
+
+      <div class="section-label" style="margin-top: 18px;">Recommended</div>
+      <div id="campsiteList" class="campsite-list"></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="home.html" class="active">Home</a>
+    <a href="home.html">Search</a>
+    <a href="saved.html">Saved</a>
+    <a href="bookings.html">Bookings</a>
+    <a href="profile.html">Profile</a>
+  </div>
+
+  <div class="modal-overlay" id="filterModal">
+    <div class="modal-sheet">
+      <div class="topbar" style="margin-bottom: 10px;">
+        <div class="brand">More Filters</div>
+        <button class="icon-btn" id="closeFilterBtn">✕</button>
+      </div>
+
+      <div class="modal-grid">
+        <div class="input-group">
+          <label class="input-label">Emirate</label>
+          <select id="filterEmirate" class="input">
+            <option value="">Any emirate</option>
+            <option value="Dubai">Dubai</option>
+            <option value="Abu Dhabi">Abu Dhabi</option>
+            <option value="Sharjah">Sharjah</option>
+            <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+            <option value="Fujairah">Fujairah</option>
+            <option value="Ajman">Ajman</option>
+            <option value="Umm Al Quwain">Umm Al Quwain</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Pricing</label>
+          <select id="filterPricing" class="input">
+            <option value="">Any pricing</option>
+            <option value="free">Free</option>
+            <option value="paid">Paid</option>
+          </select>
+        </div>
+
+        <div class="switch-row">
+          <span class="subtitle">Seasonal only</span>
+          <input type="checkbox" id="filterSeasonal" />
+        </div>
+
+        <div class="switch-row">
+          <span class="subtitle">Permit required only</span>
+          <input type="checkbox" id="filterPermit" />
+        </div>
+
+        <div class="switch-row">
+          <span class="subtitle">Weather enabled only</span>
+          <input type="checkbox" id="filterWeather" />
+        </div>
+
+        <div class="switch-row">
+            <span class="subtitle">Parking available only</span>
+            <input type="checkbox" id="filterParking" />
+        </div>
+
+        <button class="btn btn-primary" id="applyFiltersBtn">Apply Filters</button>
+        <button class="btn btn-outline" id="clearFiltersBtn">Clear Filters</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

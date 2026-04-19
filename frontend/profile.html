@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampEase - Profile</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="app">
+      <div class="topbar">
+        <div class="brand">Profile</div>
+        <div class="topbar-right">
+          <button class="profile-mini-btn" onclick="window.location.href='notifications.html'">
+            🔔
+            <span class="notification-badge"></span>
+          </button>
+          <button class="icon-btn" id="editProfileBtn">✎</button>
+        </div>
+      </div>
+
+      <div class="card section-card centered" style="padding: 22px;">
+        <div style="width: 92px; height: 92px; margin: 0 auto 14px; border-radius: 18px; background:#EAE6DF; display:flex; align-items:center; justify-content:center; font-size:32px;">
+          👤
+        </div>
+        <h2 class="title-lg" id="profileName">User Name</h2>
+        <p class="subtitle" id="profileEmail">user@example.com</p>
+      </div>
+
+      <div class="card section-card hidden" id="editProfileCard">
+        <div class="edit-toggle-row">
+          <div class="title-md">Edit Profile</div>
+          <button class="icon-btn" id="closeEditBtn">✕</button>
+        </div>
+
+        <form id="profileForm" class="edit-form">
+          <div class="input-group" style="margin-bottom:0;">
+            <label class="input-label">Full Name</label>
+            <input class="input" type="text" id="editFullName" required />
+          </div>
+
+          <div class="input-group" style="margin-bottom:0;">
+            <label class="input-label">Email</label>
+            <input class="input" type="email" id="editEmail" required />
+          </div>
+
+          <div class="input-group" style="margin-bottom:0;">
+            <label class="input-label">New Password</label>
+            <input class="input" type="password" id="editPassword" placeholder="Leave blank to keep current password" />
+          </div>
+
+          <button class="btn btn-primary" type="submit">Save Changes</button>
+          <div id="profileMessage"></div>
+        </form>
+      </div>
+
+      <div class="section-label">My Activity</div>
+      <div class="grid-2" style="margin-bottom: 18px;">
+        <div class="card section-card" id="planTripCard" style="cursor:pointer;">
+          <div class="title-md">Plan Trip</div>
+          <div class="small-text">Prototype-only journey flow</div>
+        </div>
+        <div class="card section-card" onclick="window.location.href='bookings.html'" style="cursor:pointer;">
+          <div class="title-md">Bookings</div>
+          <div class="small-text">Manage reservations</div>
+        </div>
+      </div>
+
+      <div class="section-label">Account Settings</div>
+
+      <div class="card section-card" style="padding:0;">
+        <div style="padding:16px; border-bottom:1px solid var(--border); cursor:pointer;" onclick="window.location.href='notifications.html'">
+          Notifications
+        </div>
+        <div style="padding:16px; border-bottom:1px solid var(--border); cursor:pointer;" id="openHelpCentreBtn">
+          Help Centre
+        </div>
+        <div style="padding:16px; cursor:pointer;" id="openAboutBtn">
+          About CampEase
+        </div>
+      </div>
+
+      <button class="btn btn-secondary" id="logoutBtn" style="margin-top: 18px;">Log Out</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="home.html">Home</a>
+    <a href="home.html">Search</a>
+    <a href="saved.html">Saved</a>
+    <a href="bookings.html">Bookings</a>
+    <a href="profile.html" class="active">Profile</a>
+  </div>
+
+  <!-- Help Centre Modal -->
+  <div class="modal-overlay" id="helpModal">
+    <div class="modal-sheet">
+      <div class="topbar" style="margin-bottom: 10px;">
+        <div class="brand">Help Centre</div>
+        <button class="icon-btn" id="closeHelpModalBtn">✕</button>
+      </div>
+
+      <div class="modal-grid">
+        <div class="safety-item">
+          <strong>How to book a campsite</strong>
+          <p class="small-text">
+            Open a campsite, tap <strong>Book My Camp</strong>, enter your booking details, review the information on the confirmation page, then confirm the booking.
+          </p>
+        </div>
+
+        <div class="safety-item">
+          <strong>How to save a campsite</strong>
+          <p class="small-text">
+            On the campsite details page, tap the heart icon. The heart will fill once the campsite has been added to your saved list.
+          </p>
+        </div>
+
+        <div class="safety-item">
+          <strong>How to cancel a booking</strong>
+          <p class="small-text">
+            Go to the <strong>Bookings</strong> page, open the Active tab, and tap <strong>Cancel Booking</strong>. Cancelled bookings will move to History.
+          </p>
+        </div>
+
+        <div class="safety-item">
+          <strong>How notifications work</strong>
+          <p class="small-text">
+            CampEase sends important updates such as booking confirmations and other activity notices to your Notifications page.
+          </p>
+        </div>
+
+        <div class="safety-item">
+          <strong>Weather and location guidance</strong>
+          <p class="small-text">
+            Weather and exact location details are shown on the campsite details page to help you make better camping decisions.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About CampEase Modal -->
+  <div class="modal-overlay" id="aboutModal">
+    <div class="modal-sheet">
+      <div class="topbar" style="margin-bottom: 10px;">
+        <div class="brand">About CampEase</div>
+        <button class="icon-btn" id="closeAboutModalBtn">✕</button>
+      </div>
+
+      <div class="modal-grid">
+        <div class="safety-item">
+          <strong>What is CampEase?</strong>
+          <p class="small-text">
+            CampEase is a campsite discovery and booking support platform designed to help users explore camping locations across the UAE.
+          </p>
+        </div>
+
+        <div class="safety-item">
+          <strong>What does it offer?</strong>
+          <p class="small-text">
+            The platform brings together campsite browsing, weather visibility, exact location access, saved campsites, and booking support in one experience.
+          </p>
+        </div>
+
+        <div class="safety-item">
+          <strong>Project scope</strong>
+          <p class="small-text">
+            CampEase focuses on improving campsite discovery and planning support. Some features, such as Trip Planning, were explored in the prototype stage only.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+  <div class="modal-overlay" id="planTripModal">
+    <div class="modal-sheet">
+      <div class="topbar" style="margin-bottom: 10px;">
+        <div class="brand">Plan Trip</div>
+        <button class="icon-btn" id="closePlanTripModalBtn">✕</button>
+      </div>
+
+      <div class="modal-grid">
+        <div class="safety-item">
+          <strong>Prototype-only feature</strong>
+          <p class="small-text">
+            This feature was explored during the prototype stage and is not part of the current implemented CampEase system.
+          </p>
+        </div>
+
+        <div class="safety-item">
+          <strong>What it was intended for</strong>
+          <p class="small-text">
+            The Trip Planning feature was designed to help users organise activities and prepare a fuller camping journey beyond the booking flow.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampEase - Sign Up</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="auth-page">
+  <div class="page-shell">
+    <div class="app">
+      <div class="auth-shell">
+        <div class="topbar">
+          <button class="icon-btn" onclick="window.location.href='index.html'">←</button>
+          <div class="brand">Sign Up</div>
+          <div style="width: 38px;"></div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <h1 class="title-xl" style="font-size: 34px;">Create your account</h1>
+          <p class="subtitle">Join the CampEase community and start exploring camping locations across the UAE.</p>
+        </div>
+
+        <form id="signupForm" style="margin-top: 32px;">
+          <div class="input-group">
+            <label class="input-label">Full Name</label>
+            <input class="input" type="text" id="fullName" placeholder="Name" required />
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Email Address</label>
+            <input class="input" type="email" id="email" placeholder="Email" required />
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Password</label>
+            <input class="input" type="password" id="password" placeholder="Password" required />
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Confirm Password</label>
+            <input class="input" type="password" id="confirmPassword" placeholder="Confirm password" required />
+          </div>
+
+          <button class="btn btn-primary" type="submit">Create Account</button>
+          <div id="signupMessage"></div>
+        </form>
+
+        <p class="subtitle centered" style="margin-top: 20px;">
+          Already have an account?
+          <a href="login.html" style="color: var(--primary); font-weight: bold;">Log In</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/signup.js"></script>
+</body>
+</html>

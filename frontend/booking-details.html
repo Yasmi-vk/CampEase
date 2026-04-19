@@ -1,0 +1,176 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampEase - Booking Details</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="app booking-details-layout">
+      <div class="topbar">
+        <button class="icon-btn" onclick="history.back()">←</button>
+        <div class="brand">Booking Details</div>
+        <button class="icon-btn">🔔</button>
+      </div>
+
+      <div class="card section-card">
+        <div class="booking-card-image">Selected Campsite Image</div>
+
+        <div class="row-between" style="margin-bottom: 10px;">
+          <div>
+            <div class="section-label">CampEase Exclusive</div>
+            <h1 class="title-lg" id="bookingCampName">Loading...</h1>
+            <div class="meta" id="bookingCampLocation">UAE</div>
+          </div>
+          <div>
+            <div class="section-label">Total Price</div>
+            <div class="price" id="bookingTotalPrice">AED 0</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin: 16px 0;">
+          <div class="info-box">
+            <strong>Dates</strong><br>
+            <span class="small-text" id="bookingDatesText">Oct 12 - 14</span><br>
+            <span class="small-text" id="bookingNightsText">2 nights</span>
+          </div>
+          <div class="info-box">
+            <strong>Status</strong><br>
+            <span class="small-text">Pending Confirmation</span>
+          </div>
+        </div>
+
+        <div class="confirm-box">
+          <div class="title-md" style="margin-bottom: 8px;">Confirm Booking?</div>
+          <p class="subtitle" style="margin-bottom: 14px;">
+            Would you like to finalize your stay at <span id="confirmCampName">this campsite</span> for the selected dates?
+          </p>
+          <div class="row">
+            <button class="btn btn-secondary" style="margin-top:0;" onclick="history.back()">No</button>
+            <button class="btn btn-primary" style="margin-top:0;" id="confirmBookingBtn">Yes</button>
+          </div>
+        </div>
+
+        <div style="margin-top: 18px;">
+          <div class="section-label">Reservation Summary</div>
+          <div class="booking-summary">
+            <div class="summary-row">
+              <span>Standard Camp Reservation</span>
+              <strong id="summaryBasePrice">AED 0</strong>
+            </div>
+            <div class="summary-row">
+              <span>Service & Cleaning Fee</span>
+              <strong id="summaryFeePrice">AED 0</strong>
+            </div>
+            <div class="summary-row">
+              <span>Local Tourism Tax</span>
+              <strong id="summaryTaxPrice">AED 0</strong>
+            </div>
+          </div>
+        </div>
+
+        <div id="bookingDetailsMessage"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="home.html">Home</a>
+    <a href="home.html">Search</a>
+    <a href="saved.html">Saved</a>
+    <a href="bookings.html" class="active">Bookings</a>
+    <a href="profile.html">Profile</a>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/booking-details.js"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampEase - Booking Details</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="app booking-details-layout">
+      <div class="topbar">
+        <button class="icon-btn" onclick="history.back()">←</button>
+        <div class="brand">Booking Details</div>
+        <button class="icon-btn" onclick="window.location.href='notifications.html'">🔔</button>
+      </div>
+
+      <div class="card section-card">
+        <div class="booking-card-image">Selected Campsite Image</div>
+
+        <div class="row-between" style="margin-bottom: 10px;">
+          <div>
+            <div class="section-label">CampEase Reservation</div>
+            <h1 class="title-lg" id="bookingCampName">Loading...</h1>
+            <div class="meta" id="bookingCampLocation">UAE</div>
+          </div>
+          <div>
+            <div class="section-label">Price</div>
+            <div class="price" id="bookingBasePrice">Free</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card section-card">
+        <div class="section-label">Enter Booking Details</div>
+
+        <form id="bookingForm" class="edit-form">
+          <div class="input-group" style="margin-bottom:0;">
+            <label class="input-label">Number of People</label>
+            <input class="input" type="number" id="bookingGuests" min="1" value="2" required />
+          </div>
+
+          <div class="input-group" style="margin-bottom:0;">
+            <label class="input-label">Check-In Date</label>
+            <input class="input" type="date" id="bookingCheckIn" required />
+          </div>
+
+          <div class="input-group" style="margin-bottom:0;">
+            <label class="input-label">Check-Out Date</label>
+            <input class="input" type="date" id="bookingCheckOut" required />
+          </div>
+
+          <div class="input-group" style="margin-bottom:0;">
+            <label class="input-label">Duration (Days)</label>
+            <input class="input" type="number" id="bookingDuration" min="1" readonly />
+          </div>
+
+          <div class="input-group" style="margin-bottom:0;">
+            <label class="input-label">Special Request</label>
+            <textarea class="input" id="bookingSpecialRequest" rows="4" placeholder="Any special request?"></textarea>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Continue</button>
+          <div id="bookingDetailsMessage"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="home.html">Home</a>
+    <a href="home.html">Search</a>
+    <a href="saved.html">Saved</a>
+    <a href="bookings.html" class="active">Bookings</a>
+    <a href="profile.html">Profile</a>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/booking-details.js"></script>
+</body>
+</html>

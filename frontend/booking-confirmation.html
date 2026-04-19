@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampEase - Booking Confirmation</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="app booking-confirm-layout">
+      <div class="topbar">
+        <button class="icon-btn" onclick="history.back()">←</button>
+        <div class="brand">Booking Confirmation</div>
+        <button class="icon-btn" onclick="window.location.href='notifications.html'">🔔</button>
+      </div>
+
+      <div class="card section-card">
+        <div class="section-label">Review Your Booking</div>
+        <h1 class="title-lg" id="confirmCampsiteName">Loading...</h1>
+        <div class="meta" id="confirmCampsiteLocation">UAE</div>
+
+        <div class="booking-summary" style="margin-top: 18px;">
+          <div class="summary-row">
+            <span>Check-In</span>
+            <strong id="confirmCheckIn">-</strong>
+          </div>
+          <div class="summary-row">
+            <span>Check-Out</span>
+            <strong id="confirmCheckOut">-</strong>
+          </div>
+          <div class="summary-row">
+            <span>Duration</span>
+            <strong id="confirmDuration">-</strong>
+          </div>
+          <div class="summary-row">
+            <span>People</span>
+            <strong id="confirmGuests">-</strong>
+          </div>
+          <div class="summary-row">
+            <span>Special Request</span>
+            <strong id="confirmSpecialRequest">None</strong>
+          </div>
+          <div class="summary-row">
+            <span>Price</span>
+            <strong id="confirmPrice">Free</strong>
+          </div>
+        </div>
+
+        <div class="confirm-box" style="margin-top: 20px;">
+          <div class="title-md" style="margin-bottom: 8px;">Confirm this booking?</div>
+          <p class="subtitle" style="margin-bottom: 14px;">
+            Please review the details carefully before confirming.
+          </p>
+          <div class="row">
+            <button class="btn btn-secondary" style="margin-top:0;" onclick="history.back()">Back</button>
+            <button class="btn btn-primary" style="margin-top:0;" id="confirmBookingBtn">Confirm Booking</button>
+          </div>
+        </div>
+
+        <div id="confirmationMessage"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="home.html">Home</a>
+    <a href="home.html">Search</a>
+    <a href="saved.html">Saved</a>
+    <a href="bookings.html" class="active">Bookings</a>
+    <a href="profile.html">Profile</a>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/booking-confirmation.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampEase - Notifications</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="app">
+     <div class="topbar">
+        <button class="icon-btn" onclick="history.back()">←</button>
+    <div class="brand">CampEase</div>
+         <button class="icon-btn" onclick="window.location.href='profile.html'">👤</button>
+    </div>
+
+      <div style="margin-bottom: 18px;">
+        <h1 class="title-xl" style="font-size: 34px;">Notifications</h1>
+        <p class="subtitle">Stay updated with your desert adventures.</p>
+      </div>
+
+      <div class="booking-tabs">
+        <button class="booking-tab active" data-type="all">All</button>
+        <button class="booking-tab" data-type="booking">Bookings</button>
+        <button class="booking-tab" data-type="weather">Weather</button>
+        <button class="booking-tab" data-type="news">New Spots</button>
+      </div>
+
+      <div id="notificationsList" class="campsite-list"></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="home.html">Home</a>
+    <a href="home.html">Search</a>
+    <a href="saved.html">Saved</a>
+    <a href="bookings.html">Bookings</a>
+    <a href="profile.html" class="active">Profile</a>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notifications.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampEase - Campsite Details</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="app details-layout">
+      <div class="topbar">
+        <button class="icon-btn" onclick="history.back()">←</button>
+        <div class="brand">CampEase</div>
+        <button class="icon-btn heart-btn" id="saveBtn">♡</button>
+      </div>
+
+      <div class="details-desktop-grid">
+        <div class="details-main">
+          <div class="image-placeholder">Main Campsite Image</div>
+
+          <div class="row-between details-top-actions">
+            <div class="price" id="priceText">Free</div>
+            <div class="status-pill" id="weatherBadge">Weather Enabled</div>
+          </div>
+
+          <div class="card section-card">
+            <h1 class="title-lg" id="campName">Loading...</h1>
+            <div class="meta" id="campLocation">UAE</div>
+          </div>
+
+          <div>
+            <div class="section-label">Explore</div>
+            <div class="action-grid">
+              <div class="action-tile">
+                <div class="title-md">E-Tour</div>
+                <div class="small-text" id="tourStatusText">Virtual preview</div>
+                <a href="#" class="link-btn" id="tourBtn" target="_blank">Open E-Tour</a>
+              </div>
+
+              <div class="action-tile">
+                <div class="title-md">Location</div>
+                <div class="small-text" id="locationShortText">Loading coordinates...</div>
+                <a href="#" class="link-btn" id="mapLink" target="_blank">Show Location</a>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-label">Overview</div>
+            <div class="card section-card">
+              <p class="subtitle" id="campDescription">Loading campsite description...</p>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-label">Amenities</div>
+            <div class="card section-card">
+              <div class="amenities" id="amenitiesBox"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-label">Safety & Tips</div>
+            <div class="safety-list" id="safetyBox"></div>
+          </div>
+        </div>
+
+        <div class="details-side">
+         <div>
+            <div>
+            <div class="section-label">Weather</div>
+            <div class="card section-card" style="background: #EDE7DA; cursor: pointer;" id="weatherCard">
+                <div id="weatherBox">
+                <div class="small-text">Loading weather...</div>
+                </div>
+            </div>
+            </div>
+
+          <div>
+            <div class="section-label">Key Details</div>
+            <div class="grid-2" id="detailsGrid"></div>
+          </div>
+
+          <div>
+            <div class="section-label">Location Details</div>
+            <div class="location-box">
+              <div id="locationText">Loading exact location...</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="bookBtn">Book My Camp</button>
+          <button class="btn btn-outline" id="planBtn">Plan My Trip</button>
+
+          <div id="detailsMessage"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="home.html">Home</a>
+    <a href="home.html">Search</a>
+    <a href="saved.html">Saved</a>
+    <a href="bookings.html">Bookings</a>
+    <a href="profile.html" class="active">Details</a>
+  </div>
+
+  <div class="modal-overlay" id="weatherModal">
+  <div class="modal-sheet">
+    <div class="topbar" style="margin-bottom: 10px;">
+      <div class="brand">Weather Details</div>
+      <button class="icon-btn" id="closeWeatherModalBtn">✕</button>
+    </div>
+
+    <div id="weatherDetailsContent">
+      <div class="small-text">Loading detailed weather...</div>
+    </div>
+  </div>
+</div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/campsite-details.js"></script>
+</body>
+</html>

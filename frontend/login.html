@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampEase - Login</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="auth-page">
+  <div class="page-shell">
+    <div class="app">
+      <div class="auth-shell">
+        <div class="topbar">
+          <button class="icon-btn" onclick="window.location.href='index.html'">←</button>
+          <div class="brand">Log In</div>
+          <div style="width: 38px;"></div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <h1 class="title-xl" style="font-size: 34px;">Welcome Back.</h1>
+          <p class="subtitle">Please sign in to continue your desert adventure with CampEase.</p>
+        </div>
+
+        <form id="loginForm" style="margin-top: 36px;">
+          <div class="input-group">
+            <label class="input-label">Email Address</label>
+            <input class="input" type="email" id="email" placeholder="name@example.com" required />
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Password</label>
+            <input class="input" type="password" id="password" placeholder="Enter password" required />
+          </div>
+
+          <button class="btn btn-primary" type="submit">Log In</button>
+          <div id="loginMessage"></div>
+        </form>
+
+        <div class="centered" style="margin-top: 24px;">
+          <p class="subtitle">OR</p>
+          <button class="btn btn-secondary" onclick="window.location.href='signup.html'">Create Account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>
