@@ -17,11 +17,21 @@ async function loadBookings() {
       return;
     }
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const filtered = data.filter(item => {
-      if (currentTab === "active") {
-        return item.status !== "cancelled";
-      }
-      return item.status === "cancelled";
+    const bookingEndDate = new Date(item.checkOutDate);
+    bookingEndDate.setHours(0, 0, 0, 0);
+
+    const isPastBooking = bookingEndDate < today;
+    const isCancelled = item.status === "cancelled";
+
+    if (currentTab === "active") {
+        return !isPastBooking && !isCancelled;
+    }
+
+    return isPastBooking || isCancelled;
     });
 
     if (filtered.length === 0) {

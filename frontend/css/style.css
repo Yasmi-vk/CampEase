@@ -687,10 +687,6 @@ a {
   gap: 8px;
 }
 
-.weather-card-clickable {
-  cursor: pointer;
-}
-
 .weather-day-list {
   display: grid;
   gap: 10px;
@@ -718,31 +714,6 @@ a {
   font-size: 20px;
 }
 
-.weather-main-summary {
-  display: grid;
-  gap: 12px;
-}
-
-.weather-main-card {
-  background: #EDE7DA;
-  border-radius: 14px;
-  padding: 16px;
-}
-
-.weather-stat-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.weather-stat-box {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-}
-
 #weatherDetailsContent {
   padding-bottom: 8px;
 }
@@ -764,6 +735,71 @@ a {
 .notifications-side {
   display: grid;
   gap: 16px;
+}
+
+.selected-forecast-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  overflow: hidden;
+  align-items: start;
+}
+
+.selected-forecast-item {
+  min-width: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.selected-forecast-item .day-name {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+
+.selected-forecast-item .day-icon {
+  font-size: 24px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.selected-forecast-item .day-temp {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.selected-forecast-item .day-temp strong {
+  font-weight: bold;
+}
+
+.selected-forecast-item .day-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+.weather-empty-state {
+  text-align: left;
+}
+
+.weather-empty-state .small-text {
+  margin-bottom: 8px;
+}
+
+.forecast-detail-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.forecast-detail-grid {
+  display: grid;
+  gap: 10px;
 }
 
 @media (min-width: 768px) {
@@ -821,13 +857,13 @@ a {
     padding: 24px 24px 100px;
   }
 
-  .app.details-layout,
-  .app.booking-details-layout,
-  .app.booking-confirm-layout {
-    max-width: 1240px;
+ .app.details-layout,
+ .app.booking-details-layout,
+ .app.booking-confirm-layout {
+    max-width: 1180px;
     min-height: 88vh;
     padding: 24px 24px 100px;
-  }
+    }
 
   .app.home-layout .campsite-list,
   .app.saved-layout .campsite-list,
@@ -866,18 +902,18 @@ a {
     gap: 16px;
   }
 
-.app.notifications-layout .notifications-grid {
-  grid-template-columns: minmax(0, 1fr);
-  max-width: 760px;
-  margin: 0 auto;
-  gap: 20px;
-}
+  .app.notifications-layout .notifications-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 760px;
+    margin: 0 auto;
+    gap: 20px;
+  }
 
-.app.notifications-layout .notifications-main {
-  display: grid;
-  gap: 16px;
-  min-width: 0;
-}
+  .app.notifications-layout .notifications-main {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+  }
 
   .bottom-nav {
     max-width: 1180px;
@@ -886,7 +922,7 @@ a {
   .app.details-layout + .bottom-nav,
   .app.booking-details-layout + .bottom-nav,
   .app.booking-confirm-layout + .bottom-nav {
-    max-width: 1240px;
+    max-width: 1180px;
   }
 
   .modal-sheet {
@@ -895,30 +931,33 @@ a {
   }
 }
 
-.selected-forecast-row {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(140px, 1fr);
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 6px;
+#weatherBox {
+  width: 100%;
+  overflow: hidden;
 }
 
-.selected-forecast-card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-  min-width: 140px;
+.app.details-layout .section-card {
+  overflow: hidden;
 }
 
-.selected-forecast-card .day-title {
-  font-size: 13px;
-  font-weight: bold;
-  margin-bottom: 6px;
-}
+@media (max-width: 640px) {
+  .selected-forecast-strip {
+    gap: 6px;
+  }
 
-.selected-forecast-card .day-icon {
-  font-size: 22px;
-  margin-bottom: 6px;
+  .selected-forecast-item .day-name {
+    font-size: 12px;
+  }
+
+  .selected-forecast-item .day-icon {
+    font-size: 20px;
+  }
+
+  .selected-forecast-item .day-temp {
+    font-size: 11px;
+  }
+
+  .selected-forecast-item .day-sub {
+    font-size: 10px;
+  }
 }
