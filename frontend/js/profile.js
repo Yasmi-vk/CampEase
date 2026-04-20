@@ -10,6 +10,7 @@ function fillProfile() {
   document.getElementById("editFullName").value = currentUser.fullName || "";
   document.getElementById("editEmail").value = currentUser.email || "";
   document.getElementById("editPassword").value = "";
+  document.getElementById("confirmEditPassword").value = "";
 }
 
 fillProfile();
@@ -32,18 +33,31 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
   const fullName = document.getElementById("editFullName").value.trim();
   const email = document.getElementById("editEmail").value.trim();
   const password = document.getElementById("editPassword").value.trim();
+  const confirmPassword = document.getElementById("confirmEditPassword").value.trim();
+
+  if (password || confirmPassword) {
+    if (password !== confirmPassword) {
+      showMessage("profileMessage", "Passwords do not match");
+      return;
+    }
+  }
 
   try {
+    const bodyData = {
+      fullName,
+      email
+    };
+
+    if (password) {
+      bodyData.password = password;
+    }
+
     const response = await fetch(`${API_BASE_URL}/users/${currentUser._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        fullName,
-        email,
-        password
-      })
+      body: JSON.stringify(bodyData)
     });
 
     const data = await response.json();
