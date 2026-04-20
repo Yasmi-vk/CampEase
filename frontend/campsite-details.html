@@ -69,10 +69,11 @@
          <div>
             <div>
             <div class="section-label">Weather</div>
-            <div class="card section-card" style="background: #EDE7DA; cursor: pointer;" id="weatherCard">
+            <div class="card section-card" style="background: #EDE7DA;">
                 <div id="weatherBox">
                 <div class="small-text">Loading weather...</div>
                 </div>
+                <button class="btn btn-outline hidden" id="loadMoreWeatherBtn" style="margin-top: 12px;">Load More</button>
             </div>
             </div>
 
@@ -108,12 +109,12 @@
   <div class="modal-overlay" id="weatherModal">
   <div class="modal-sheet">
     <div class="topbar" style="margin-bottom: 10px;">
-      <div class="brand">Weather Details</div>
+      <div class="brand">Forecast Details</div>
       <button class="icon-btn" id="closeWeatherModalBtn">✕</button>
     </div>
 
     <div id="weatherDetailsContent">
-      <div class="small-text">Loading detailed weather...</div>
+      <div class="small-text">Loading detailed forecast...</div>
     </div>
   </div>
 </div>
