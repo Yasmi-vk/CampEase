@@ -10,6 +10,8 @@ async function createBooking(req, res) {
       campsiteId,
       checkInDate,
       checkOutDate,
+      adults,
+      children,
       guests,
       specialRequest
     } = req.body;
@@ -58,15 +60,17 @@ async function createBooking(req, res) {
     }
 
     const newBooking = {
-      userId: new ObjectId(userId),
-      campsiteId: new ObjectId(campsiteId),
-      checkInDate,
-      checkOutDate,
-      guests: Number(guests),
-      specialRequest: specialRequest || "",
-      status: "confirmed",
-      createdAt: new Date()
-    };
+    userId: new ObjectId(userId),
+    campsiteId: new ObjectId(campsiteId),
+    checkInDate,
+    checkOutDate,
+    adults: adults ?? 1,
+    children: children ?? 0,
+    guests: guests ?? ((adults ?? 1) + (children ?? 0)),
+    specialRequest: specialRequest || "",
+    status: "confirmed",
+    createdAt: new Date()
+  };
 
     const result = await db.collection("bookings").insertOne(newBooking);
 
@@ -250,6 +254,8 @@ async function getBookingsByUser(req, res) {
           campsiteId: 1,
           checkInDate: 1,
           checkOutDate: 1,
+          adults: 1,
+          children: 1,
           guests: 1,
           specialRequest: 1,
           status: 1,

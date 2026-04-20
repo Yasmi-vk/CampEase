@@ -128,11 +128,18 @@
         <div class="section-label">Enter Booking Details</div>
 
         <form id="bookingForm" class="edit-form">
-          <div class="input-group" style="margin-bottom:0;">
-            <label class="input-label">Number of People</label>
-            <input class="input" type="number" id="bookingGuests" min="1" value="2" required />
-          </div>
+          <div class="grid-2">
+            <div class="input-group" style="margin-bottom:0;">
+                <label class="input-label">Adults</label>
+                <input class="input" type="number" id="bookingAdults" min="1" value="2" required />
+            </div>
 
+            <div class="input-group" style="margin-bottom:0;">
+                <label class="input-label">Children</label>
+                <input class="input" type="number" id="bookingChildren" min="0" value="0" required />
+            </div>
+            </div>
+            
           <div class="input-group" style="margin-bottom:0;">
             <label class="input-label">Check-In Date</label>
             <input class="input" type="date" id="bookingCheckIn" required />

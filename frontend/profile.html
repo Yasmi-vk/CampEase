@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="page-shell">
-    <div class="app">
+    <div class="app profile-layout">
       <div class="topbar">
         <div class="brand">Profile</div>
         <div class="topbar-right">
@@ -20,68 +20,82 @@
         </div>
       </div>
 
-      <div class="card section-card centered" style="padding: 22px;">
-        <div style="width: 92px; height: 92px; margin: 0 auto 14px; border-radius: 18px; background:#EAE6DF; display:flex; align-items:center; justify-content:center; font-size:32px;">
-          👤
-        </div>
-        <h2 class="title-lg" id="profileName">User Name</h2>
-        <p class="subtitle" id="profileEmail">user@example.com</p>
-      </div>
-
-      <div class="card section-card hidden" id="editProfileCard">
-        <div class="edit-toggle-row">
-          <div class="title-md">Edit Profile</div>
-          <button class="icon-btn" id="closeEditBtn">✕</button>
-        </div>
-
-        <form id="profileForm" class="edit-form">
-          <div class="input-group" style="margin-bottom:0;">
-            <label class="input-label">Full Name</label>
-            <input class="input" type="text" id="editFullName" required />
+      <div class="profile-grid">
+        <div class="profile-main">
+          <div class="card section-card centered" style="padding: 22px;">
+            <div style="width: 92px; height: 92px; margin: 0 auto 14px; border-radius: 18px; background:#EAE6DF; display:flex; align-items:center; justify-content:center; font-size:32px;">
+              👤
+            </div>
+            <h2 class="title-lg" id="profileName">User Name</h2>
+            <p class="subtitle" id="profileEmail">user@example.com</p>
           </div>
 
-          <div class="input-group" style="margin-bottom:0;">
-            <label class="input-label">Email</label>
-            <input class="input" type="email" id="editEmail" required />
+          <div class="card section-card hidden" id="editProfileCard">
+            <div class="edit-toggle-row">
+              <div class="title-md">Edit Profile</div>
+              <button class="icon-btn" id="closeEditBtn">✕</button>
+            </div>
+
+            <form id="profileForm" class="edit-form">
+              <div class="input-group" style="margin-bottom:0;">
+                <label class="input-label">Full Name</label>
+                <input class="input" type="text" id="editFullName" required />
+              </div>
+
+              <div class="input-group" style="margin-bottom:0;">
+                <label class="input-label">Email</label>
+                <input class="input" type="email" id="editEmail" required />
+              </div>
+
+              <div class="input-group" style="margin-bottom:0;">
+                <label class="input-label">New Password</label>
+                <input class="input" type="password" id="editPassword" placeholder="Leave blank to keep current password" />
+                </div>
+
+                <div class="input-group" style="margin-bottom:0;">
+                <label class="input-label">Confirm New Password</label>
+                <input class="input" type="password" id="confirmEditPassword" placeholder="Re-enter new password" />
+                </div>
+
+              <button class="btn btn-primary" type="submit">Save Changes</button>
+              <div id="profileMessage"></div>
+            </form>
+          </div>
+        </div>
+
+        <div class="profile-side">
+          <div>
+            <div class="section-label">My Activity</div>
+            <div class="grid-2" style="margin-bottom: 18px;">
+              <div class="card section-card" id="planTripCard" style="cursor:pointer;">
+                <div class="title-md">Plan Trip</div>
+                <div class="small-text">Prototype-only journey flow</div>
+              </div>
+              <div class="card section-card" onclick="window.location.href='bookings.html'" style="cursor:pointer;">
+                <div class="title-md">Bookings</div>
+                <div class="small-text">Manage reservations</div>
+              </div>
+            </div>
           </div>
 
-          <div class="input-group" style="margin-bottom:0;">
-            <label class="input-label">New Password</label>
-            <input class="input" type="password" id="editPassword" placeholder="Leave blank to keep current password" />
+          <div>
+            <div class="section-label">Account Settings</div>
+            <div class="card section-card" style="padding:0;">
+              <div style="padding:16px; border-bottom:1px solid var(--border); cursor:pointer;" onclick="window.location.href='notifications.html'">
+                Notifications
+              </div>
+              <div style="padding:16px; border-bottom:1px solid var(--border); cursor:pointer;" id="openHelpCentreBtn">
+                Help Centre
+              </div>
+              <div style="padding:16px; cursor:pointer;" id="openAboutBtn">
+                About CampEase
+              </div>
+            </div>
+
+            <button class="btn btn-secondary" id="logoutBtn" style="margin-top: 18px;">Log Out</button>
           </div>
-
-          <button class="btn btn-primary" type="submit">Save Changes</button>
-          <div id="profileMessage"></div>
-        </form>
-      </div>
-
-      <div class="section-label">My Activity</div>
-      <div class="grid-2" style="margin-bottom: 18px;">
-        <div class="card section-card" id="planTripCard" style="cursor:pointer;">
-          <div class="title-md">Plan Trip</div>
-          <div class="small-text">Prototype-only journey flow</div>
-        </div>
-        <div class="card section-card" onclick="window.location.href='bookings.html'" style="cursor:pointer;">
-          <div class="title-md">Bookings</div>
-          <div class="small-text">Manage reservations</div>
         </div>
       </div>
-
-      <div class="section-label">Account Settings</div>
-
-      <div class="card section-card" style="padding:0;">
-        <div style="padding:16px; border-bottom:1px solid var(--border); cursor:pointer;" onclick="window.location.href='notifications.html'">
-          Notifications
-        </div>
-        <div style="padding:16px; border-bottom:1px solid var(--border); cursor:pointer;" id="openHelpCentreBtn">
-          Help Centre
-        </div>
-        <div style="padding:16px; cursor:pointer;" id="openAboutBtn">
-          About CampEase
-        </div>
-      </div>
-
-      <button class="btn btn-secondary" id="logoutBtn" style="margin-top: 18px;">Log Out</button>
     </div>
   </div>
 
@@ -93,7 +107,6 @@
     <a href="profile.html" class="active">Profile</a>
   </div>
 
-  <!-- Help Centre Modal -->
   <div class="modal-overlay" id="helpModal">
     <div class="modal-sheet">
       <div class="topbar" style="margin-bottom: 10px;">
@@ -140,7 +153,6 @@
     </div>
   </div>
 
-  <!-- About CampEase Modal -->
   <div class="modal-overlay" id="aboutModal">
     <div class="modal-sheet">
       <div class="topbar" style="margin-bottom: 10px;">
@@ -173,7 +185,6 @@
     </div>
   </div>
 
-    
   <div class="modal-overlay" id="planTripModal">
     <div class="modal-sheet">
       <div class="topbar" style="margin-bottom: 10px;">

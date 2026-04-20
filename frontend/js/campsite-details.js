@@ -18,8 +18,7 @@ async function loadCampsiteDetails() {
     document.getElementById("campLocation").textContent = campsite.emirate || "UAE";
     document.getElementById("campDescription").textContent = campsite.description || "No description available.";
     document.getElementById("priceText").textContent = formatPrice(campsite.priceAED, campsite.pricingModel);
-    document.getElementById("weatherBadge").textContent = campsite.weatherEnabled ? "Weather Enabled" : "Weather Not Available";
-
+   
     if (campsite.weatherEnabled && campsite.latitude && campsite.longitude) {
       await loadCampsiteWeather(campsite.latitude, campsite.longitude);
     } else {

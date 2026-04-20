@@ -590,6 +590,9 @@ a {
   border-top-right-radius: 24px;
   padding: 20px 16px 24px;
   box-shadow: var(--shadow-lg);
+  max-height: 85vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal-grid {
@@ -607,112 +610,24 @@ a {
   margin: 14px 0 16px;
 }
 
-@media (min-width: 768px) {
-  .page-shell {
-    padding: 24px;
-    align-items: center;
-  }
-
-  .app {
-    max-width: 500px;
-    min-height: 88vh;
-    border-radius: 28px;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
-  }
-
-  .bottom-nav {
-    max-width: 500px;
-    border-bottom-left-radius: 28px;
-    border-bottom-right-radius: 28px;
-    overflow: hidden;
-  }
-
-  .modal-sheet {
-    max-width: 500px;
-    border-radius: 24px;
-    margin-bottom: 20px;
-  }
-
-  .auth-page .app,
-  .welcome-page .app {
-    max-width: 460px;
-  }
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-@media (min-width: 1024px) {
-  .app.home-layout,
-  .app.saved-layout,
-  .app.bookings-layout {
-    max-width: 1180px;
-    min-height: 88vh;
-    padding: 24px 24px 100px;
-  }
-
-  .app.details-layout,
-  .app.booking-details-layout,
-  .app.booking-confirm-layout {
-    max-width: 1240px;
-    min-height: 88vh;
-    padding: 24px 24px 100px;
-  }
-
-  .app.home-layout .campsite-list,
-  .app.saved-layout .campsite-list,
-  .app.bookings-layout .campsite-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
-  }
-
-  .app.details-layout .details-desktop-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
-    gap: 24px;
-    align-items: start;
-  }
-
-  .app.details-layout .details-main,
-  .app.details-layout .details-side {
-    display: grid;
-    gap: 16px;
-  }
-
-  .app.details-layout .image-placeholder {
-    height: 320px;
-  }
-
-  .bottom-nav {
-    max-width: 1180px;
-  }
-
-  .app.details-layout + .bottom-nav,
-  .app.booking-details-layout + .bottom-nav,
-  .app.booking-confirm-layout + .bottom-nav {
-    max-width: 1240px;
-  }
-
-  .modal-sheet {
-    max-width: 540px;
-    border-radius: 24px;
-  }
-}
-
-.notification-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  min-width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: white;
-  font-size: 10px;
-  font-weight: bold;
-  display: none;
+.profile-mini-btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 5px;
+  min-width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: white;
+  cursor: pointer;
+  position: relative;
+  font-size: 16px;
 }
 
 .edit-form {
@@ -732,24 +647,8 @@ a {
   display: none !important;
 }
 
-.home-topbar {
-  display: grid;
-  grid-template-columns: 38px 1fr auto;
-  align-items: center;
-  gap: 10px;
-}
-
-.home-topbar .brand {
-  text-align: center;
-}
-
-.home-topbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.notification-icon-btn {
+.notification-icon-btn,
+.profile-mini-btn {
   position: relative;
 }
 
@@ -769,6 +668,23 @@ a {
   justify-content: center;
   padding: 0 5px;
   line-height: 1;
+}
+
+.home-topbar {
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-topbar .brand {
+  text-align: center;
+}
+
+.home-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .weather-card-clickable {
@@ -827,12 +743,154 @@ a {
   padding: 12px;
 }
 
-.modal-sheet {
-  max-height: 85vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
 #weatherDetailsContent {
   padding-bottom: 8px;
+}
+
+.profile-layout,
+.notifications-layout {
+  width: 100%;
+}
+
+.profile-grid,
+.notifications-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.profile-main,
+.profile-side,
+.notifications-main,
+.notifications-side {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .page-shell {
+    padding: 24px;
+    align-items: center;
+  }
+
+  .app {
+    max-width: 500px;
+    min-height: 88vh;
+    border-radius: 28px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  .bottom-nav {
+    max-width: 500px;
+    border-bottom-left-radius: 28px;
+    border-bottom-right-radius: 28px;
+    overflow: hidden;
+  }
+
+  .modal-sheet {
+    max-width: 500px;
+    border-radius: 24px;
+    margin-bottom: 20px;
+  }
+
+  .auth-page .app,
+  .welcome-page .app {
+    max-width: 460px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app.home-layout,
+  .app.saved-layout,
+  .app.bookings-layout {
+    max-width: 1180px;
+    min-height: 88vh;
+    padding: 24px 24px 100px;
+  }
+
+  .app.profile-layout {
+    max-width: 980px;
+    min-height: 88vh;
+    padding: 24px 24px 100px;
+  }
+
+  .app.notifications-layout {
+    max-width: 1180px;
+    min-height: 88vh;
+    padding: 24px 24px 100px;
+  }
+
+  .app.details-layout,
+  .app.booking-details-layout,
+  .app.booking-confirm-layout {
+    max-width: 1240px;
+    min-height: 88vh;
+    padding: 24px 24px 100px;
+  }
+
+  .app.home-layout .campsite-list,
+  .app.saved-layout .campsite-list,
+  .app.bookings-layout .campsite-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .app.details-layout .details-desktop-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .app.details-layout .details-main,
+  .app.details-layout .details-side {
+    display: grid;
+    gap: 16px;
+  }
+
+  .app.details-layout .image-placeholder {
+    height: 320px;
+  }
+
+  .app.profile-layout .profile-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 760px;
+    margin: 0 auto;
+    gap: 20px;
+  }
+
+  .app.profile-layout .profile-main,
+  .app.profile-layout .profile-side {
+    display: grid;
+    gap: 16px;
+  }
+
+.app.notifications-layout .notifications-grid {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 760px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.app.notifications-layout .notifications-main {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+  .bottom-nav {
+    max-width: 1180px;
+  }
+
+  .app.details-layout + .bottom-nav,
+  .app.booking-details-layout + .bottom-nav,
+  .app.booking-confirm-layout + .bottom-nav {
+    max-width: 1240px;
+  }
+
+  .modal-sheet {
+    max-width: 540px;
+    border-radius: 24px;
+  }
 }

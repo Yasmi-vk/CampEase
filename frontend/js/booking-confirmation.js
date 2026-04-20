@@ -13,12 +13,14 @@ function fillBookingConfirmation() {
   document.getElementById("confirmCheckIn").textContent = bookingDraft.checkInDate;
   document.getElementById("confirmCheckOut").textContent = bookingDraft.checkOutDate;
   document.getElementById("confirmDuration").textContent = `${bookingDraft.duration} day(s)`;
-  document.getElementById("confirmGuests").textContent = `${bookingDraft.guests} people`;
+  document.getElementById("confirmAdults").textContent = `${bookingDraft.adults} adult(s)`;
+  document.getElementById("confirmChildren").textContent = `${bookingDraft.children} child(ren)`;
+  document.getElementById("confirmGuests").textContent = `${bookingDraft.guests} total`;
   document.getElementById("confirmSpecialRequest").textContent = bookingDraft.specialRequest || "None";
   document.getElementById("confirmPrice").textContent = formatPrice(bookingDraft.priceAED, bookingDraft.pricingModel);
 }
 
-async function createBookingNotification(userId, campsiteName, emirate) {
+async function createBookingNotification(userId, campsiteName, emirate, bookingId) {
   try {
     await fetch(`${API_BASE_URL}/notifications`, {
       method: "POST",
@@ -31,7 +33,7 @@ async function createBookingNotification(userId, campsiteName, emirate) {
         title: "Your booking is confirmed",
         message: `Your booking at ${campsiteName} in ${emirate} has been confirmed.`,
         actionText: "View Booking",
-        actionUrl: "bookings.html"
+        actionUrl: `booking-view.html?bookingId=${bookingId}`
       })
     });
   } catch (error) {
@@ -58,6 +60,8 @@ async function confirmBooking() {
         campsiteId: bookingDraft.campsiteId,
         checkInDate: bookingDraft.checkInDate,
         checkOutDate: bookingDraft.checkOutDate,
+        adults: bookingDraft.adults,
+        children: bookingDraft.children,
         guests: bookingDraft.guests,
         specialRequest: bookingDraft.specialRequest
       })
@@ -70,7 +74,12 @@ async function confirmBooking() {
       return;
     }
 
-    await createBookingNotification(user._id, bookingDraft.campsiteName, bookingDraft.emirate || "UAE");
+    await createBookingNotification(
+      user._id,
+      bookingDraft.campsiteName,
+      bookingDraft.emirate || "UAE",
+      data.bookingId
+    );
 
     localStorage.removeItem("campeaseBookingDraft");
     window.location.href = `bookings.html`;

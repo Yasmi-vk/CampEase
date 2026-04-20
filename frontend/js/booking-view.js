@@ -32,7 +32,8 @@ async function loadBookingView() {
     document.getElementById("viewCheckIn").textContent = booking.checkInDate || "-";
     document.getElementById("viewCheckOut").textContent = booking.checkOutDate || "-";
     document.getElementById("viewDuration").textContent = `${booking.nights || 0} day(s)`;
-    document.getElementById("viewGuests").textContent = `${booking.guests || 1} people`;
+    document.getElementById("viewGuests").textContent =
+      `${booking.adults ?? 1} adult(s), ${booking.children ?? 0} child(ren)`;
     document.getElementById("viewSpecialRequest").textContent = booking.specialRequest || "None";
     document.getElementById("viewPrice").textContent = formatPrice(booking.priceAED, booking.pricingModel);
 

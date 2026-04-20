@@ -39,13 +39,14 @@ document.getElementById("bookingCheckOut").addEventListener("change", calculateD
 document.getElementById("bookingForm").addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const guests = document.getElementById("bookingGuests").value;
+  const adults = Number(document.getElementById("bookingAdults").value);
+  const children = Number(document.getElementById("bookingChildren").value);
   const checkInDate = document.getElementById("bookingCheckIn").value;
   const checkOutDate = document.getElementById("bookingCheckOut").value;
   const duration = document.getElementById("bookingDuration").value;
   const specialRequest = document.getElementById("bookingSpecialRequest").value.trim();
 
-  if (!guests || !checkInDate || !checkOutDate || !duration) {
+  if (!adults || adults < 1 || !checkInDate || !checkOutDate || !duration) {
     showMessage("bookingDetailsMessage", "Please complete all booking details");
     return;
   }
@@ -61,7 +62,9 @@ document.getElementById("bookingForm").addEventListener("submit", (e) => {
     emirate: selectedCampsite?.emirate || "",
     priceAED: selectedCampsite?.priceAED ?? 0,
     pricingModel: selectedCampsite?.pricingModel || "free",
-    guests: Number(guests),
+    adults,
+    children,
+    guests: adults + children,
     checkInDate,
     checkOutDate,
     duration: Number(duration),
