@@ -71,6 +71,21 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
     fillProfile();
     showMessage("profileMessage", "Profile updated successfully", "success");
 
+    await fetch(`${API_BASE_URL}/notifications`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        userId: data.user._id,
+        type: "profile",
+        title: "Profile updated",
+        message: "Your profile details were updated successfully.",
+        actionText: "View Profile",
+        actionUrl: "profile.html"
+    })
+    });
+
     setTimeout(() => {
       document.getElementById("editProfileCard").classList.add("hidden");
     }, 900);

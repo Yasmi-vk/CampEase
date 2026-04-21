@@ -1,6 +1,7 @@
 requireLogin();
 
 let currentTab = "active";
+let pendingCancelBookingId = null;
 
 async function loadBookings() {
   const user = getUserSession();
@@ -21,17 +22,17 @@ async function loadBookings() {
     today.setHours(0, 0, 0, 0);
 
     const filtered = data.filter(item => {
-    const bookingEndDate = new Date(item.checkOutDate);
-    bookingEndDate.setHours(0, 0, 0, 0);
+      const bookingEndDate = new Date(item.checkOutDate);
+      bookingEndDate.setHours(0, 0, 0, 0);
 
-    const isPastBooking = bookingEndDate < today;
-    const isCancelled = item.status === "cancelled";
+      const isPastBooking = bookingEndDate < today;
+      const isCancelled = item.status === "cancelled";
 
-    if (currentTab === "active") {
+      if (currentTab === "active") {
         return !isPastBooking && !isCancelled;
-    }
+      }
 
-    return isPastBooking || isCancelled;
+      return isPastBooking || isCancelled;
     });
 
     if (filtered.length === 0) {
@@ -79,8 +80,8 @@ async function loadBookings() {
 
       const cancelBtn = card.querySelector(".cancel-booking-btn");
       if (cancelBtn) {
-        cancelBtn.addEventListener("click", async () => {
-          await cancelBooking(item._id);
+        cancelBtn.addEventListener("click", () => {
+          openCancelBookingModal(item._id);
         });
       }
 
@@ -91,41 +92,58 @@ async function loadBookings() {
   }
 }
 
-async function cancelBooking(bookingId) {
-  const confirmed = confirm("Are you sure you want to cancel this booking?");
-  if (!confirmed) return;
+function openCancelBookingModal(bookingId) {
+  pendingCancelBookingId = bookingId;
+  document.getElementById("cancelBookingMessage").innerHTML = "";
+  document.getElementById("cancelBookingModal").classList.add("show");
+}
+
+function closeCancelBookingModal() {
+  pendingCancelBookingId = null;
+  document.getElementById("cancelBookingModal").classList.remove("show");
+  document.getElementById("cancelBookingMessage").innerHTML = "";
+}
+
+async function cancelBookingConfirmed() {
+  if (!pendingCancelBookingId) return;
 
   try {
-    const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/cancel`, {
+    const response = await fetch(`${API_BASE_URL}/bookings/${pendingCancelBookingId}/cancel`, {
       method: "PUT"
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      alert(data.message || "Failed to cancel booking");
+      showMessage("cancelBookingMessage", data.message || "Failed to cancel booking");
       return;
     }
 
-    alert("Booking cancelled successfully");
     const user = getUserSession();
+
     await fetch(`${API_BASE_URL}/notifications`, {
-    method: "POST",
-    headers: {
+      method: "POST",
+      headers: {
         "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
+      },
+      body: JSON.stringify({
         userId: user._id,
         type: "booking",
         title: "Booking cancelled",
         message: "Your campsite booking has been cancelled successfully.",
         actionText: "View Booking",
-        actionUrl: `booking-view.html?bookingId=${bookingId}`
-    })
+        actionUrl: `booking-view.html?bookingId=${pendingCancelBookingId}`
+      })
     });
-    loadBookings();
+
+    showMessage("cancelBookingMessage", "Booking cancelled successfully", "success");
+
+    setTimeout(() => {
+      closeCancelBookingModal();
+      loadBookings();
+    }, 700);
   } catch (error) {
-    alert("Failed to cancel booking");
+    showMessage("cancelBookingMessage", "Failed to cancel booking");
   }
 }
 
@@ -142,6 +160,10 @@ document.getElementById("historyTabBtn").addEventListener("click", () => {
   document.getElementById("activeTabBtn").classList.remove("active");
   loadBookings();
 });
+
+document.getElementById("closeCancelBookingModalBtn").addEventListener("click", closeCancelBookingModal);
+document.getElementById("keepBookingBtn").addEventListener("click", closeCancelBookingModal);
+document.getElementById("confirmCancelBookingBtn").addEventListener("click", cancelBookingConfirmed);
 
 loadBookings();
 updateNotificationBadges();
