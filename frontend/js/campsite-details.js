@@ -4,34 +4,36 @@ let isSaved = false;
 let currentWeatherData = null;
 let selectedForecastDays = [];
 
-function getDateRangeArray(startDate, endDate) {
-  const dates = [];
-  const current = new Date(startDate);
-  const end = new Date(endDate);
+// function getDateRangeArray(startDate, endDate) {
+//   const dates = [];
+//   const current = new Date(startDate);
+//   const end = new Date(endDate);
 
-  while (current <= end) {
-    dates.push(current.toISOString().split("T")[0]);
-    current.setDate(current.getDate() + 1);
-  }
+//   while (current <= end) {
+//     dates.push(current.toISOString().split("T")[0]);
+//     current.setDate(current.getDate() + 1);
+//   }
 
-  return dates;
-}
+//   return dates;
+// }
 
 function formatDayLabel(dateString) {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", { weekday: "short" });
 }
 
-function buildSelectedForecast(weatherData, checkInDate, checkOutDate) {
+function buildSelectedForecast(weatherData, checkInDate, durationDays) {
   if (!weatherData || !weatherData.daily) return [];
 
-  const selectedDates = getDateRangeArray(checkInDate, checkOutDate);
   const daily = weatherData.daily;
+  const startIndex = daily.time.indexOf(checkInDate);
 
-  return selectedDates
-    .map(date => {
-      const index = daily.time.indexOf(date);
-      if (index === -1) return null;
+  if (startIndex === -1) return [];
+
+  return daily.time
+    .slice(startIndex, startIndex + durationDays)
+    .map((date, offset) => {
+      const index = startIndex + offset;
 
       return {
         date,
@@ -41,8 +43,7 @@ function buildSelectedForecast(weatherData, checkInDate, checkOutDate) {
         precipitation_probability_max: daily.precipitation_probability_max?.[index],
         wind_speed_10m_max: daily.wind_speed_10m_max?.[index]
       };
-    })
-    .filter(Boolean);
+    });
 }
 
 function renderForecastStrip(days) {
@@ -79,16 +80,16 @@ async function loadSelectedForecast() {
     return;
   }
 
-  const start = new Date(checkIn);
-  const end = new Date(checkOut);
-  const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+ const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
 
-  if (diff <= 0) {
+    if (diff <= 0) {
     document.getElementById("weatherBox").innerHTML =
-      `<div class="small-text">Check-out date must be after check-in date.</div>`;
+        `<div class="small-text">Check-out date must be after check-in date.</div>`;
     loadMoreBtn.classList.add("hidden");
     return;
-  }
+    }
 
   if (!currentCampsite || !currentCampsite.latitude || !currentCampsite.longitude || !currentCampsite.weatherEnabled) {
     document.getElementById("weatherBox").innerHTML =
@@ -106,10 +107,10 @@ async function loadSelectedForecast() {
     return;
   }
 
-  selectedForecastDays = buildSelectedForecast(currentWeatherData, checkIn, checkOut);
-
-  renderForecastStrip(selectedForecastDays.slice(0, 5));
-  document.getElementById("showForecastBtn").classList.add("hidden");
+    const durationDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+    selectedForecastDays = buildSelectedForecast(currentWeatherData, checkIn, durationDays);
+    renderForecastStrip(selectedForecastDays.slice(0, 5));
+    document.getElementById("showForecastBtn").classList.add("hidden");
 
   if (selectedForecastDays.length > 5) {
     loadMoreBtn.classList.remove("hidden");

@@ -30,7 +30,7 @@ function calculateDuration() {
 
   const start = new Date(checkIn);
   const end = new Date(checkOut);
-  const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+  const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
 
   document.getElementById("bookingDuration").value = diff > 0 ? diff : "";
 }
@@ -53,16 +53,18 @@ function formatDayLabel(dateString) {
   return date.toLocaleDateString("en-US", { weekday: "short" });
 }
 
-function buildSelectedForecast(weatherData, checkInDate, checkOutDate) {
+function buildSelectedForecast(weatherData, checkInDate, durationDays) {
   if (!weatherData || !weatherData.daily) return [];
 
-  const selectedDates = getDateRangeArray(checkInDate, checkOutDate);
   const daily = weatherData.daily;
+  const startIndex = daily.time.indexOf(checkInDate);
 
-  return selectedDates
-    .map(date => {
-      const index = daily.time.indexOf(date);
-      if (index === -1) return null;
+  if (startIndex === -1) return [];
+
+  return daily.time
+    .slice(startIndex, startIndex + durationDays)
+    .map((date, offset) => {
+      const index = startIndex + offset;
 
       return {
         date,
@@ -72,8 +74,7 @@ function buildSelectedForecast(weatherData, checkInDate, checkOutDate) {
         precipitation_probability_max: daily.precipitation_probability_max?.[index],
         wind_speed_10m_max: daily.wind_speed_10m_max?.[index]
       };
-    })
-    .filter(Boolean);
+    });
 }
 
 function renderBookingForecastStrip(days) {
@@ -119,13 +120,13 @@ async function loadBookingWeatherPreview() {
 
   const start = new Date(checkIn);
   const end = new Date(checkOut);
-  const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+  const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
 
-  if (diff <= 0) {
+    if (diff <= 0) {
     weatherBox.innerHTML = `<div class="small-text">Check-out date must be after check-in date.</div>`;
     loadMoreBtn.classList.add("hidden");
     return;
-  }
+    }
 
   bookingWeatherData = await fetchWeather(selectedCampsite.latitude, selectedCampsite.longitude, 16);
 
@@ -135,7 +136,13 @@ async function loadBookingWeatherPreview() {
     return;
   }
 
-  bookingSelectedForecastDays = buildSelectedForecast(bookingWeatherData, checkIn, checkOut);
+const durationDays = Number(document.getElementById("bookingDuration").value);
+
+    bookingSelectedForecastDays = buildSelectedForecast(
+    bookingWeatherData,
+    checkIn,
+    durationDays
+    );
 
   renderBookingForecastStrip(bookingSelectedForecastDays.slice(0, 5));
 
