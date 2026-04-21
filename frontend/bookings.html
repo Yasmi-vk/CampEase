@@ -37,6 +37,31 @@
     <a href="profile.html">Profile</a>
   </div>
 
+  <div class="modal-overlay" id="cancelBookingModal">
+  <div class="modal-sheet">
+    <div class="topbar" style="margin-bottom: 10px;">
+      <div class="brand">Cancel Booking</div>
+      <button class="icon-btn" id="closeCancelBookingModalBtn">✕</button>
+    </div>
+
+    <div class="modal-grid">
+      <div class="safety-item">
+        <strong>Are you sure?</strong>
+        <p class="small-text">
+          This booking will be moved to your history once cancelled.
+        </p>
+      </div>
+
+      <div class="row">
+        <button class="btn btn-secondary" type="button" id="keepBookingBtn" style="margin-top:0;">Keep Booking</button>
+        <button class="btn btn-danger-outline" type="button" id="confirmCancelBookingBtn" style="margin-top:0;">Cancel Booking</button>
+      </div>
+
+      <div id="cancelBookingMessage"></div>
+    </div>
+  </div>
+</div>
+
   <script src="js/config.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/auth.js"></script>

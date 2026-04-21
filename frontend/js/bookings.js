@@ -108,6 +108,21 @@ async function cancelBooking(bookingId) {
     }
 
     alert("Booking cancelled successfully");
+    const user = getUserSession();
+    await fetch(`${API_BASE_URL}/notifications`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        userId: user._id,
+        type: "booking",
+        title: "Booking cancelled",
+        message: "Your campsite booking has been cancelled successfully.",
+        actionText: "View Booking",
+        actionUrl: `booking-view.html?bookingId=${bookingId}`
+    })
+    });
     loadBookings();
   } catch (error) {
     alert("Failed to cancel booking");

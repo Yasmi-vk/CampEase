@@ -845,12 +845,12 @@ a {
     padding: 24px 24px 100px;
   }
 
-  .app.profile-layout {
-    max-width: 980px;
+    .app.profile-layout {
+    max-width: 1180px;
     min-height: 88vh;
     padding: 24px 24px 100px;
-  }
-
+    }
+    
   .app.notifications-layout {
     max-width: 1180px;
     min-height: 88vh;
