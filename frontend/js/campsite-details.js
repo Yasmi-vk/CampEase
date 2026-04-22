@@ -22,7 +22,15 @@ let mainImageInterval = null;
 // }
 
 function getFallbackETourImages(campsiteName) {
-  if (!campsiteName) return [];
+  if (!campsiteName) { 
+    return [
+    "/etour/default/1.jpg",
+    "/etour/default/2.jpg",
+    "/etour/default/3.jpg",
+    "/etour/default/4.jpg",
+    "/etour/default/5.jpg"
+    ];
+    }
 
   const name = campsiteName.toLowerCase();
 
@@ -76,7 +84,13 @@ function getFallbackETourImages(campsiteName) {
     ];
   }
 
-  return [];
+  return [
+  "/etour/default/1.jpg",
+  "/etour/default/2.jpg",
+  "/etour/default/3.jpg",
+  "/etour/default/4.jpg",
+  "/etour/default/5.jpg"
+];
 }
 
 function renderETourImage() {

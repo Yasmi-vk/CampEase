@@ -66,7 +66,13 @@ function getFallbackETourPreviewSet(campsiteName) {
     ];
   }
 
-  return [];
+  return [
+  "/etour/default/1.jpg",
+  "/etour/default/2.jpg",
+  "/etour/default/3.jpg",
+  "/etour/default/4.jpg",
+  "/etour/default/5.jpg"
+];
 }
 
 async function loadCampsites() {
