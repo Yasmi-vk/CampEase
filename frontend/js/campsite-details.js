@@ -98,22 +98,24 @@ function renderETourImage() {
   `;
 }
 
-// function openETourModal() {
-//   document.getElementById("etourModal").classList.add("show");
-//   renderETourImage();
+function openETourModal() {
+  document.getElementById("etourModal").classList.add("show");
+  renderETourImage();
+}
+
+
+function closeETourModal() {
+  document.getElementById("etourModal").classList.remove("show");
+}
+
+// function closeETourModal() {
+//   document.getElementById("etourModal").classList.remove("show");
+
+//   if (etourInterval) {
+//     clearInterval(etourInterval);
+//     etourInterval = null;
+//   }
 // }
-function closeETourModal() {
-  document.getElementById("etourModal").classList.remove("show");
-}
-
-function closeETourModal() {
-  document.getElementById("etourModal").classList.remove("show");
-
-  if (etourInterval) {
-    clearInterval(etourInterval);
-    etourInterval = null;
-  }
-}
 
 function nextETourImage() {
   if (!etourImages.length) return;
@@ -171,6 +173,16 @@ function startMainImageAnimation() {
       renderMainCampsiteImage();
     }, 2500);
   }
+}
+
+function handleETourButtonClick(e) {
+  e.preventDefault();
+
+  if (!etourImages.length) {
+    return;
+  }
+
+  openETourModal();
 }
 
 function formatDayLabel(dateString) {
@@ -390,20 +402,11 @@ async function loadCampsiteDetails() {
     const tourBtn = document.getElementById("tourBtn");
     const tourStatusText = document.getElementById("tourStatusText");
 
-    if (etourImages.length > 0) {
+    if (tourBtn && tourStatusText) {
     tourBtn.href = "#";
-    tourBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        openETourModal();
-    });
-    tourStatusText.textContent = "Interactive preview available";
-    } else {
-    tourBtn.href = "#";
-    tourBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        alert("E-tour will be added later.");
-    }, { once: true });
-    tourStatusText.textContent = "Will be added later";
+    tourStatusText.textContent = etourImages.length > 0
+        ? "Interactive preview available"
+        : "Will be added later";
     }
 
     await checkIfSaved();
@@ -537,6 +540,7 @@ document.getElementById("planBtn").addEventListener("click", () => {
 document.getElementById("closeETourModalBtn").addEventListener("click", closeETourModal);
 document.getElementById("nextETourBtn").addEventListener("click", nextETourImage);
 document.getElementById("prevETourBtn").addEventListener("click", prevETourImage);
+document.getElementById("tourBtn")?.addEventListener("click", handleETourButtonClick);
 
 loadCampsiteDetails();
 loadLocation();

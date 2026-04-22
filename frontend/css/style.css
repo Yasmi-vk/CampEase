@@ -971,3 +971,41 @@ a {
   object-fit: cover;
   display: block;
 }
+
+.image-placeholder,
+.campsite-thumb,
+.booking-card-image,
+#etourViewer {
+  overflow: hidden;
+  background: #EAE6DF;
+}
+
+.image-placeholder {
+  aspect-ratio: 16 / 10;
+  height: auto;
+  min-height: 220px;
+}
+
+.campsite-thumb {
+  aspect-ratio: 16 / 10;
+  height: auto;
+  min-height: 160px;
+}
+
+#etourViewer {
+  aspect-ratio: 16 / 10;
+  height: auto !important;
+  min-height: 260px;
+  border-radius: 14px;
+}
+
+.image-placeholder img,
+.campsite-thumb img,
+.booking-card-image img,
+#etourViewer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
