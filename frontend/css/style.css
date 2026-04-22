@@ -850,7 +850,7 @@ a {
     min-height: 88vh;
     padding: 24px 24px 100px;
     }
-    
+
   .app.notifications-layout {
     max-width: 1180px;
     min-height: 88vh;
@@ -960,4 +960,14 @@ a {
   .selected-forecast-item .day-sub {
     font-size: 10px;
   }
+}
+
+.image-placeholder img,
+.campsite-thumb img,
+.booking-card-image img,
+#etourViewer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }

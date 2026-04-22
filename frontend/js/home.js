@@ -11,6 +11,20 @@ let filters = {
   parkingAvailable: false
 };
 
+function getFallbackETourPreview(campsiteName) {
+  if (!campsiteName) return null;
+
+  const name = campsiteName.toLowerCase();
+
+  if (name.includes("qudra")) return `${STATIC_BASE_URL}/etour/alqudra/1.jpg`;
+  if (name.includes("dibba")) return `${STATIC_BASE_URL}/etour/dibba/1.jpg`;
+  if (name.includes("hatta")) return `${STATIC_BASE_URL}/etour/hatta/1.jpg`;
+  if (name.includes("wadi shees") || name.includes("wadishees") || name.includes("shees")) return `${STATIC_BASE_URL}/etour/wadishees/1.jpg`;
+  if (name.includes("jebel jais") || name.includes("jebeljais") || name.includes("jais")) return `${STATIC_BASE_URL}/etour/jebeljais/1.jpg`;
+
+  return null;
+}
+
 async function loadCampsites() {
   const searchValue = document.getElementById("searchInput").value.trim();
   let url = `${API_BASE_URL}/campsites`;
@@ -44,10 +58,19 @@ async function loadCampsites() {
     campsites.slice(0, 12).forEach(campsite => {
       const badgeClass = campsite.category ? campsite.category : "default";
 
+      const previewImage =
+        Array.isArray(campsite.imageUrls) && campsite.imageUrls.length > 0
+          ? campsite.imageUrls[0]
+          : getFallbackETourPreview(campsite.name);
+
+      const imageHtml = previewImage
+        ? `<img src="${previewImage}" alt="${campsite.name}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" onerror="this.parentElement.textContent='Campsite Image';" />`
+        : `Campsite Image`;
+
       const card = document.createElement("div");
       card.className = "card campsite-card";
       card.innerHTML = `
-        <div class="campsite-thumb">Campsite Image</div>
+        <div class="campsite-thumb">${imageHtml}</div>
         <div class="badges">
           <span class="badge ${badgeClass}">${campsite.category || "camp"}</span>
         </div>

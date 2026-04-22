@@ -3,6 +3,9 @@ let currentCampsite = null;
 let isSaved = false;
 let currentWeatherData = null;
 let selectedForecastDays = [];
+let etourImages = [];
+let currentETourIndex = 0;
+let etourInterval = null;
 
 // function getDateRangeArray(startDate, endDate) {
 //   const dates = [];
@@ -16,6 +19,118 @@ let selectedForecastDays = [];
 
 //   return dates;
 // }
+
+function getFallbackETourImages(campsiteName) {
+  if (!campsiteName) return [];
+
+  const name = campsiteName.toLowerCase();
+
+  if (name.includes("qudra")) {
+    return [
+      "/etour/alqudra/1.jpg",
+      "/etour/alqudra/2.jpg",
+      "/etour/alqudra/3.jpg",
+      "/etour/alqudra/4.jpg",
+      "/etour/alqudra/5.jpg"
+    ];
+  }
+
+  if (name.includes("dibba")) {
+    return [
+      "/etour/dibba/1.jpg",
+      "/etour/dibba/2.jpg",
+      "/etour/dibba/3.jpg",
+      "/etour/dibba/4.jpg",
+      "/etour/dibba/5.jpg"
+    ];
+  }
+
+  if (name.includes("hatta")) {
+    return [
+      "/etour/hatta/1.jpg",
+      "/etour/hatta/2.jpg",
+      "/etour/hatta/3.jpg",
+      "/etour/hatta/4.jpg",
+      "/etour/hatta/5.jpg"
+    ];
+  }
+
+  if (name.includes("wadi shees") || name.includes("wadishees") || name.includes("shees")) {
+    return [
+      "/etour/wadishees/1.jpg",
+      "/etour/wadishees/2.jpg",
+      "/etour/wadishees/3.jpg",
+      "/etour/wadishees/4.jpg",
+      "/etour/wadishees/5.jpg"
+    ];
+  }
+
+  if (name.includes("jebel jais") || name.includes("jebeljais") || name.includes("jais")) {
+    return [
+      "/etour/jebeljais/1.jpg",
+      "/etour/jebeljais/2.jpg",
+      "/etour/jebeljais/3.jpg",
+      "/etour/jebeljais/4.jpg",
+      "/etour/jebeljais/5.jpg"
+    ];
+  }
+
+  return [];
+}
+
+function renderETourImage() {
+  const viewer = document.getElementById("etourViewer");
+
+  if (!etourImages.length) {
+    viewer.innerHTML = `<span class="small-text">E-tour will be added later.</span>`;
+    return;
+  }
+
+  const imageSrc = `${STATIC_BASE_URL}${etourImages[currentETourIndex]}`;
+
+  viewer.innerHTML = `
+    <img
+      src="${imageSrc}"
+      alt="E-Tour Image"
+      onerror="this.outerHTML='<span class=&quot;small-text&quot;>Failed to load E-Tour image.</span>';"
+    />
+  `;
+}
+
+function openETourModal() {
+  document.getElementById("etourModal").classList.add("show");
+  renderETourImage();
+
+  if (etourInterval) clearInterval(etourInterval);
+
+  if (etourImages.length > 1) {
+    etourInterval = setInterval(() => {
+      currentETourIndex = (currentETourIndex + 1) % etourImages.length;
+      renderETourImage();
+    }, 2500);
+  }
+}
+
+function closeETourModal() {
+  document.getElementById("etourModal").classList.remove("show");
+
+  if (etourInterval) {
+    clearInterval(etourInterval);
+    etourInterval = null;
+  }
+}
+
+function nextETourImage() {
+  if (!etourImages.length) return;
+  currentETourIndex = (currentETourIndex + 1) % etourImages.length;
+  renderETourImage();
+}
+
+function prevETourImage() {
+  if (!etourImages.length) return;
+  currentETourIndex = (currentETourIndex - 1 + etourImages.length) % etourImages.length;
+  renderETourImage();
+}
 
 function formatDayLabel(dateString) {
   const date = new Date(dateString);
@@ -183,6 +298,33 @@ async function loadCampsiteDetails() {
     const response = await fetch(`${API_BASE_URL}/campsites/${campsiteId}`);
     const campsite = await response.json();
     currentCampsite = campsite;
+    etourImages = Array.isArray(campsite.eTourImages) && campsite.eTourImages.length
+    ? campsite.eTourImages
+    : getFallbackETourImages(campsite.name);
+
+    currentETourIndex = 0;
+
+    const mainImageBox = document.getElementById("mainCampsiteImage");
+
+const campsiteImage =
+  Array.isArray(campsite.imageUrls) && campsite.imageUrls.length > 0
+    ? campsite.imageUrls[0]
+    : (etourImages.length > 0 ? `${STATIC_BASE_URL}${etourImages[0]}` : null);
+    
+    if (mainImageBox) {
+    if (campsiteImage) {
+        mainImageBox.innerHTML = `
+        <img
+            src="${campsiteImage}"
+            alt="${campsite.name}"
+            style="width:100%;height:100%;object-fit:cover;border-radius:16px;"
+            onerror="this.parentElement.textContent='Main Campsite Image';"
+        />
+        `;
+    } else {
+        mainImageBox.textContent = "Main Campsite Image";
+    }
+    }
 
     document.getElementById("campName").textContent = campsite.name || "Unnamed campsite";
     document.getElementById("campLocation").textContent = campsite.emirate || "UAE";
@@ -227,16 +369,21 @@ async function loadCampsiteDetails() {
 
     const tourBtn = document.getElementById("tourBtn");
     const tourStatusText = document.getElementById("tourStatusText");
-    if (campsite.eTourUrl && campsite.eTourUrl.trim()) {
-      tourBtn.href = campsite.eTourUrl;
-      tourStatusText.textContent = "Interactive preview available";
+
+    if (etourImages.length > 0) {
+    tourBtn.href = "#";
+    tourBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        openETourModal();
+    });
+    tourStatusText.textContent = "Interactive preview available";
     } else {
-      tourBtn.href = "#";
-      tourBtn.addEventListener("click", (e) => {
+    tourBtn.href = "#";
+    tourBtn.addEventListener("click", (e) => {
         e.preventDefault();
         alert("E-tour will be added later.");
-      }, { once: true });
-      tourStatusText.textContent = "Will be added later";
+    }, { once: true });
+    tourStatusText.textContent = "Will be added later";
     }
 
     await checkIfSaved();
@@ -366,6 +513,10 @@ document.getElementById("closeWeatherModalBtn").addEventListener("click", closeW
 document.getElementById("planBtn").addEventListener("click", () => {
   alert("Trip planner remains prototype-only.");
 });
+
+document.getElementById("closeETourModalBtn").addEventListener("click", closeETourModal);
+document.getElementById("nextETourBtn").addEventListener("click", nextETourImage);
+document.getElementById("prevETourBtn").addEventListener("click", prevETourImage);
 
 loadCampsiteDetails();
 loadLocation();
