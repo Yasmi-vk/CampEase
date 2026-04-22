@@ -365,9 +365,9 @@ async function loadCampsiteDetails() {
     const response = await fetch(`${API_BASE_URL}/campsites/${campsiteId}`);
     const campsite = await response.json();
     currentCampsite = campsite;
-    etourImages = Array.isArray(campsite.eTourImages) && campsite.eTourImages.length
-    ? campsite.eTourImages
-    : getFallbackETourImages(campsite.name);
+   etourImages = Array.isArray(campsite.eTourImages) && campsite.eTourImages.length
+        ? campsite.eTourImages
+        : getFallbackETourImages(campsite.name);
 
     currentETourIndex = 0;
     startMainImageAnimation();

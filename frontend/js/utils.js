@@ -63,3 +63,92 @@ async function updateNotificationBadges() {
     }
   });
 }
+
+function getFallbackETourImages(campsiteName) {
+  if (!campsiteName) {
+    return [
+      "/etour/default/1.jpg",
+      "/etour/default/2.jpg",
+      "/etour/default/3.jpg",
+      "/etour/default/4.jpg",
+      "/etour/default/5.jpg"
+    ];
+  }
+
+  const name = campsiteName.toLowerCase();
+
+  if (name.includes("qudra")) {
+    return [
+      "/etour/alqudra/1.jpg",
+      "/etour/alqudra/2.jpg",
+      "/etour/alqudra/3.jpg",
+      "/etour/alqudra/4.jpg",
+      "/etour/alqudra/5.jpg"
+    ];
+  }
+
+  if (name.includes("dibba")) {
+    return [
+      "/etour/dibba/1.jpg",
+      "/etour/dibba/2.jpg",
+      "/etour/dibba/3.jpg",
+      "/etour/dibba/4.jpg",
+      "/etour/dibba/5.jpg"
+    ];
+  }
+
+  if (name.includes("hatta")) {
+    return [
+      "/etour/hatta/1.jpg",
+      "/etour/hatta/2.jpg",
+      "/etour/hatta/3.jpg",
+      "/etour/hatta/4.jpg",
+      "/etour/hatta/5.jpg"
+    ];
+  }
+
+  if (name.includes("wadi shees") || name.includes("wadishees") || name.includes("shees")) {
+    return [
+      "/etour/wadishees/1.jpg",
+      "/etour/wadishees/2.jpg",
+      "/etour/wadishees/3.jpg",
+      "/etour/wadishees/4.jpg",
+      "/etour/wadishees/5.jpg"
+    ];
+  }
+
+  if (name.includes("jebel jais") || name.includes("jebeljais") || name.includes("jais")) {
+    return [
+      "/etour/jebeljais/1.jpg",
+      "/etour/jebeljais/2.jpg",
+      "/etour/jebeljais/3.jpg",
+      "/etour/jebeljais/4.jpg",
+      "/etour/jebeljais/5.jpg"
+    ];
+  }
+
+  return [
+    "/etour/default/1.jpg",
+    "/etour/default/2.jpg",
+    "/etour/default/3.jpg",
+    "/etour/default/4.jpg",
+    "/etour/default/5.jpg"
+  ];
+}
+
+function getPrimaryCampsiteImage(campsite) {
+  if (Array.isArray(campsite?.imageUrls) && campsite.imageUrls.length > 0) {
+    return campsite.imageUrls[0];
+  }
+
+  const fallbackImages = getFallbackETourImages(campsite?.name || "");
+  return fallbackImages.length ? `${STATIC_BASE_URL}${fallbackImages[0]}` : null;
+}
+
+function getCampsiteImageSet(campsite) {
+  if (Array.isArray(campsite?.imageUrls) && campsite.imageUrls.length > 0) {
+    return campsite.imageUrls;
+  }
+
+  return getFallbackETourImages(campsite?.name || "").map(path => `${STATIC_BASE_URL}${path}`);
+}

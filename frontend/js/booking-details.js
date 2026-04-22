@@ -5,6 +5,22 @@ let selectedCampsite = null;
 let bookingWeatherData = null;
 let bookingSelectedForecastDays = [];
 
+function getBookingFallbackImage(campsiteName, imageUrls) {
+  if (Array.isArray(imageUrls) && imageUrls.length > 0) {
+    return imageUrls[0];
+  }
+
+  const name = (campsiteName || "").toLowerCase();
+
+  if (name.includes("qudra")) return `${STATIC_BASE_URL}/etour/alqudra/1.jpg`;
+  if (name.includes("dibba")) return `${STATIC_BASE_URL}/etour/dibba/1.jpg`;
+  if (name.includes("hatta")) return `${STATIC_BASE_URL}/etour/hatta/1.jpg`;
+  if (name.includes("wadi shees") || name.includes("wadishees") || name.includes("shees")) return `${STATIC_BASE_URL}/etour/wadishees/1.jpg`;
+  if (name.includes("jebel jais") || name.includes("jebeljais") || name.includes("jais")) return `${STATIC_BASE_URL}/etour/jebeljais/1.jpg`;
+
+  return `${STATIC_BASE_URL}/etour/default/1.jpg`;
+}
+
 async function loadBookingPreview() {
   try {
     const response = await fetch(`${API_BASE_URL}/campsites/${bookingCampsiteId}`);
@@ -14,6 +30,24 @@ async function loadBookingPreview() {
     document.getElementById("bookingCampName").textContent = campsite.name;
     document.getElementById("bookingCampLocation").textContent = campsite.emirate || "UAE";
     document.getElementById("bookingBasePrice").textContent = formatPrice(campsite.priceAED, campsite.pricingModel);
+
+    const bookingImageBox = document.querySelector(".booking-card-image");
+    const previewImage = getBookingFallbackImage(campsite.name, campsite.imageUrls);
+
+    if (bookingImageBox) {
+      if (previewImage) {
+        bookingImageBox.innerHTML = `
+          <img
+            src="${previewImage}"
+            alt="${campsite.name}"
+            style="width:100%;height:100%;object-fit:cover;border-radius:14px;"
+            onerror="this.parentElement.textContent='Selected Campsite Image';"
+          />
+        `;
+      } else {
+        bookingImageBox.textContent = "Selected Campsite Image";
+      }
+    }
   } catch (error) {
     showMessage("bookingDetailsMessage", "Failed to load booking details");
   }
@@ -33,19 +67,6 @@ function calculateDuration() {
   const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
 
   document.getElementById("bookingDuration").value = diff > 0 ? diff : "";
-}
-
-function getDateRangeArray(startDate, endDate) {
-  const dates = [];
-  const current = new Date(startDate);
-  const end = new Date(endDate);
-
-  while (current <= end) {
-    dates.push(current.toISOString().split("T")[0]);
-    current.setDate(current.getDate() + 1);
-  }
-
-  return dates;
 }
 
 function formatDayLabel(dateString) {
@@ -122,11 +143,11 @@ async function loadBookingWeatherPreview() {
   const end = new Date(checkOut);
   const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
 
-    if (diff <= 0) {
+  if (diff <= 0) {
     weatherBox.innerHTML = `<div class="small-text">Check-out date must be after check-in date.</div>`;
     loadMoreBtn.classList.add("hidden");
     return;
-    }
+  }
 
   bookingWeatherData = await fetchWeather(selectedCampsite.latitude, selectedCampsite.longitude, 16);
 
@@ -136,13 +157,13 @@ async function loadBookingWeatherPreview() {
     return;
   }
 
-const durationDays = Number(document.getElementById("bookingDuration").value);
+  const durationDays = Number(document.getElementById("bookingDuration").value);
 
-    bookingSelectedForecastDays = buildSelectedForecast(
+  bookingSelectedForecastDays = buildSelectedForecast(
     bookingWeatherData,
     checkIn,
     durationDays
-    );
+  );
 
   renderBookingForecastStrip(bookingSelectedForecastDays.slice(0, 5));
 

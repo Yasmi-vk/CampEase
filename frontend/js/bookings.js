@@ -3,6 +3,22 @@ requireLogin();
 let currentTab = "active";
 let pendingCancelBookingId = null;
 
+function getBookingFallbackImage(campsiteName, imageUrls) {
+  if (Array.isArray(imageUrls) && imageUrls.length > 0) {
+    return imageUrls[0];
+  }
+
+  const name = (campsiteName || "").toLowerCase();
+
+  if (name.includes("qudra")) return `${STATIC_BASE_URL}/etour/alqudra/1.jpg`;
+  if (name.includes("dibba")) return `${STATIC_BASE_URL}/etour/dibba/1.jpg`;
+  if (name.includes("hatta")) return `${STATIC_BASE_URL}/etour/hatta/1.jpg`;
+  if (name.includes("wadi shees") || name.includes("wadishees") || name.includes("shees")) return `${STATIC_BASE_URL}/etour/wadishees/1.jpg`;
+  if (name.includes("jebel jais") || name.includes("jebeljais") || name.includes("jais")) return `${STATIC_BASE_URL}/etour/jebeljais/1.jpg`;
+
+  return `${STATIC_BASE_URL}/etour/default/1.jpg`;
+}
+
 async function loadBookings() {
   const user = getUserSession();
   const container = document.getElementById("bookingsContainer");
@@ -43,10 +59,7 @@ async function loadBookings() {
     filtered.forEach(item => {
       const statusText = item.status === "cancelled" ? "Cancelled" : "Confirmed";
       const statusIcon = item.status === "cancelled" ? "❌" : "✅";
-      const imageUrl =
-        item.imageUrls && item.imageUrls.length > 0
-          ? item.imageUrls[0]
-          : "";
+      const imageUrl = getBookingFallbackImage(item.campsiteName, item.imageUrls);
 
       const card = document.createElement("div");
       card.className = "card campsite-card";
@@ -54,7 +67,7 @@ async function loadBookings() {
         <div class="campsite-thumb">
           ${
             imageUrl
-              ? `<img src="${imageUrl}" alt="${item.campsiteName}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" />`
+              ? `<img src="${imageUrl}" alt="${item.campsiteName}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" onerror="this.parentElement.textContent='Booking Image';" />`
               : `Booking Image`
           }
         </div>

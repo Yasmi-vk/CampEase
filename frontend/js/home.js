@@ -12,7 +12,15 @@ let filters = {
 };
 
 function getFallbackETourPreviewSet(campsiteName) {
-  if (!campsiteName) return [];
+  if (!campsiteName) {
+    return [
+      `${STATIC_BASE_URL}/etour/default/1.jpg`,
+      `${STATIC_BASE_URL}/etour/default/2.jpg`,
+      `${STATIC_BASE_URL}/etour/default/3.jpg`,
+      `${STATIC_BASE_URL}/etour/default/4.jpg`,
+      `${STATIC_BASE_URL}/etour/default/5.jpg`
+    ];
+  }
 
   const name = campsiteName.toLowerCase();
 
@@ -67,12 +75,12 @@ function getFallbackETourPreviewSet(campsiteName) {
   }
 
   return [
-  "/etour/default/1.jpg",
-  "/etour/default/2.jpg",
-  "/etour/default/3.jpg",
-  "/etour/default/4.jpg",
-  "/etour/default/5.jpg"
-];
+    `${STATIC_BASE_URL}/etour/default/1.jpg`,
+    `${STATIC_BASE_URL}/etour/default/2.jpg`,
+    `${STATIC_BASE_URL}/etour/default/3.jpg`,
+    `${STATIC_BASE_URL}/etour/default/4.jpg`,
+    `${STATIC_BASE_URL}/etour/default/5.jpg`
+  ];
 }
 
 async function loadCampsites() {
@@ -110,10 +118,10 @@ async function loadCampsites() {
 
       const previewImages =
         Array.isArray(campsite.imageUrls) && campsite.imageUrls.length > 0
-        ? campsite.imageUrls
-        : getFallbackETourPreviewSet(campsite.name);
+          ? campsite.imageUrls
+          : getFallbackETourPreviewSet(campsite.name);
 
-        const imageHtml = previewImages.length
+      const imageHtml = previewImages.length
         ? `<img src="${previewImages[0]}" alt="${campsite.name}" class="home-card-image" data-images='${JSON.stringify(previewImages)}' data-index="0" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" onerror="this.parentElement.textContent='Campsite Image';" />`
         : `Campsite Image`;
 
