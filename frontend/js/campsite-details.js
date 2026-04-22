@@ -6,6 +6,7 @@ let selectedForecastDays = [];
 let etourImages = [];
 let currentETourIndex = 0;
 let etourInterval = null;
+let mainImageInterval = null;
 
 // function getDateRangeArray(startDate, endDate) {
 //   const dates = [];
@@ -97,18 +98,12 @@ function renderETourImage() {
   `;
 }
 
-function openETourModal() {
-  document.getElementById("etourModal").classList.add("show");
-  renderETourImage();
-
-  if (etourInterval) clearInterval(etourInterval);
-
-  if (etourImages.length > 1) {
-    etourInterval = setInterval(() => {
-      currentETourIndex = (currentETourIndex + 1) % etourImages.length;
-      renderETourImage();
-    }, 2500);
-  }
+// function openETourModal() {
+//   document.getElementById("etourModal").classList.add("show");
+//   renderETourImage();
+// }
+function closeETourModal() {
+  document.getElementById("etourModal").classList.remove("show");
 }
 
 function closeETourModal() {
@@ -130,6 +125,52 @@ function prevETourImage() {
   if (!etourImages.length) return;
   currentETourIndex = (currentETourIndex - 1 + etourImages.length) % etourImages.length;
   renderETourImage();
+}
+
+function renderMainCampsiteImage() {
+  const mainImageBox = document.getElementById("mainCampsiteImage");
+
+  if (!mainImageBox) return;
+
+  const campsiteImage =
+    Array.isArray(currentCampsite?.imageUrls) && currentCampsite.imageUrls.length > 0
+      ? currentCampsite.imageUrls[0]
+      : (etourImages.length > 0 ? `${STATIC_BASE_URL}${etourImages[currentETourIndex]}` : null);
+
+  if (campsiteImage) {
+    mainImageBox.innerHTML = `
+      <img
+        src="${campsiteImage}"
+        alt="${currentCampsite?.name || 'Campsite Image'}"
+        style="width:100%;height:100%;object-fit:cover;border-radius:16px;"
+        onerror="this.parentElement.textContent='Main Campsite Image';"
+      />
+    `;
+  } else {
+    mainImageBox.textContent = "Main Campsite Image";
+  }
+}
+
+function startMainImageAnimation() {
+  if (mainImageInterval) {
+    clearInterval(mainImageInterval);
+    mainImageInterval = null;
+  }
+
+  if (!etourImages.length) {
+    renderMainCampsiteImage();
+    return;
+  }
+
+  currentETourIndex = 0;
+  renderMainCampsiteImage();
+
+  if (etourImages.length > 1) {
+    mainImageInterval = setInterval(() => {
+      currentETourIndex = (currentETourIndex + 1) % etourImages.length;
+      renderMainCampsiteImage();
+    }, 2500);
+  }
 }
 
 function formatDayLabel(dateString) {
@@ -303,28 +344,7 @@ async function loadCampsiteDetails() {
     : getFallbackETourImages(campsite.name);
 
     currentETourIndex = 0;
-
-    const mainImageBox = document.getElementById("mainCampsiteImage");
-
-const campsiteImage =
-  Array.isArray(campsite.imageUrls) && campsite.imageUrls.length > 0
-    ? campsite.imageUrls[0]
-    : (etourImages.length > 0 ? `${STATIC_BASE_URL}${etourImages[0]}` : null);
-    
-    if (mainImageBox) {
-    if (campsiteImage) {
-        mainImageBox.innerHTML = `
-        <img
-            src="${campsiteImage}"
-            alt="${campsite.name}"
-            style="width:100%;height:100%;object-fit:cover;border-radius:16px;"
-            onerror="this.parentElement.textContent='Main Campsite Image';"
-        />
-        `;
-    } else {
-        mainImageBox.textContent = "Main Campsite Image";
-    }
-    }
+    startMainImageAnimation();
 
     document.getElementById("campName").textContent = campsite.name || "Unnamed campsite";
     document.getElementById("campLocation").textContent = campsite.emirate || "UAE";

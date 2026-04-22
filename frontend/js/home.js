@@ -11,18 +11,62 @@ let filters = {
   parkingAvailable: false
 };
 
-function getFallbackETourPreview(campsiteName) {
-  if (!campsiteName) return null;
+function getFallbackETourPreviewSet(campsiteName) {
+  if (!campsiteName) return [];
 
   const name = campsiteName.toLowerCase();
 
-  if (name.includes("qudra")) return `${STATIC_BASE_URL}/etour/alqudra/1.jpg`;
-  if (name.includes("dibba")) return `${STATIC_BASE_URL}/etour/dibba/1.jpg`;
-  if (name.includes("hatta")) return `${STATIC_BASE_URL}/etour/hatta/1.jpg`;
-  if (name.includes("wadi shees") || name.includes("wadishees") || name.includes("shees")) return `${STATIC_BASE_URL}/etour/wadishees/1.jpg`;
-  if (name.includes("jebel jais") || name.includes("jebeljais") || name.includes("jais")) return `${STATIC_BASE_URL}/etour/jebeljais/1.jpg`;
+  if (name.includes("qudra")) {
+    return [
+      `${STATIC_BASE_URL}/etour/alqudra/1.jpg`,
+      `${STATIC_BASE_URL}/etour/alqudra/2.jpg`,
+      `${STATIC_BASE_URL}/etour/alqudra/3.jpg`,
+      `${STATIC_BASE_URL}/etour/alqudra/4.jpg`,
+      `${STATIC_BASE_URL}/etour/alqudra/5.jpg`
+    ];
+  }
 
-  return null;
+  if (name.includes("dibba")) {
+    return [
+      `${STATIC_BASE_URL}/etour/dibba/1.jpg`,
+      `${STATIC_BASE_URL}/etour/dibba/2.jpg`,
+      `${STATIC_BASE_URL}/etour/dibba/3.jpg`,
+      `${STATIC_BASE_URL}/etour/dibba/4.jpg`,
+      `${STATIC_BASE_URL}/etour/dibba/5.jpg`
+    ];
+  }
+
+  if (name.includes("hatta")) {
+    return [
+      `${STATIC_BASE_URL}/etour/hatta/1.jpg`,
+      `${STATIC_BASE_URL}/etour/hatta/2.jpg`,
+      `${STATIC_BASE_URL}/etour/hatta/3.jpg`,
+      `${STATIC_BASE_URL}/etour/hatta/4.jpg`,
+      `${STATIC_BASE_URL}/etour/hatta/5.jpg`
+    ];
+  }
+
+  if (name.includes("wadi shees") || name.includes("wadishees") || name.includes("shees")) {
+    return [
+      `${STATIC_BASE_URL}/etour/wadishees/1.jpg`,
+      `${STATIC_BASE_URL}/etour/wadishees/2.jpg`,
+      `${STATIC_BASE_URL}/etour/wadishees/3.jpg`,
+      `${STATIC_BASE_URL}/etour/wadishees/4.jpg`,
+      `${STATIC_BASE_URL}/etour/wadishees/5.jpg`
+    ];
+  }
+
+  if (name.includes("jebel jais") || name.includes("jebeljais") || name.includes("jais")) {
+    return [
+      `${STATIC_BASE_URL}/etour/jebeljais/1.jpg`,
+      `${STATIC_BASE_URL}/etour/jebeljais/2.jpg`,
+      `${STATIC_BASE_URL}/etour/jebeljais/3.jpg`,
+      `${STATIC_BASE_URL}/etour/jebeljais/4.jpg`,
+      `${STATIC_BASE_URL}/etour/jebeljais/5.jpg`
+    ];
+  }
+
+  return [];
 }
 
 async function loadCampsites() {
@@ -58,13 +102,13 @@ async function loadCampsites() {
     campsites.slice(0, 12).forEach(campsite => {
       const badgeClass = campsite.category ? campsite.category : "default";
 
-      const previewImage =
+      const previewImages =
         Array.isArray(campsite.imageUrls) && campsite.imageUrls.length > 0
-          ? campsite.imageUrls[0]
-          : getFallbackETourPreview(campsite.name);
+        ? campsite.imageUrls
+        : getFallbackETourPreviewSet(campsite.name);
 
-      const imageHtml = previewImage
-        ? `<img src="${previewImage}" alt="${campsite.name}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" onerror="this.parentElement.textContent='Campsite Image';" />`
+        const imageHtml = previewImages.length
+        ? `<img src="${previewImages[0]}" alt="${campsite.name}" class="home-card-image" data-images='${JSON.stringify(previewImages)}' data-index="0" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" onerror="this.parentElement.textContent='Campsite Image';" />`
         : `Campsite Image`;
 
       const card = document.createElement("div");
@@ -88,6 +132,21 @@ async function loadCampsites() {
       });
 
       list.appendChild(card);
+
+      const animatedImage = card.querySelector(".home-card-image");
+
+      if (animatedImage) {
+        const images = JSON.parse(animatedImage.dataset.images || "[]");
+
+        if (images.length > 1) {
+          setInterval(() => {
+            let currentIndex = Number(animatedImage.dataset.index || "0");
+            currentIndex = (currentIndex + 1) % images.length;
+            animatedImage.src = images[currentIndex];
+            animatedImage.dataset.index = String(currentIndex);
+          }, 2500);
+        }
+      }
     });
 
     if (Array.isArray(campsites) && campsites.length > 0) {
