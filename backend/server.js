@@ -15,6 +15,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use("/etour", express.static("public/etour"));
+
 app.get("/", (req, res) => {
   res.json({ message: "CampEase backend is running" });
 });
@@ -25,6 +27,7 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/saved-campsites", savedCampsiteRoutes);
 app.use("/api/weather", weatherRoutes);
 app.use("/api/notifications", notificationRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 
