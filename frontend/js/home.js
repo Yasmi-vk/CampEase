@@ -201,32 +201,113 @@ async function loadCampsites() {
   }
 }
 
+function getCurrentBrowserLocation() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error("Geolocation not supported"));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        resolve({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        });
+      },
+      error => reject(error),
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000
+      }
+    );
+  });
+}
+
 async function loadHomeWeather(featuredCampsite) {
-  if (
-    !featuredCampsite ||
-    !featuredCampsite.weatherEnabled ||
-    !featuredCampsite.latitude ||
-    !featuredCampsite.longitude
-  ) {
-    document.getElementById("homeWeatherMeta").textContent = "Weather unavailable";
-    return;
+  try {
+    const currentLocation = await getCurrentBrowserLocation();
+
+    const weather = await fetchWeather(
+      currentLocation.latitude,
+      currentLocation.longitude
+    );
+
+    if (!weather || !weather.current) {
+      throw new Error("Weather unavailable");
+    }
+
+    const current = weather.current;
+    const label = getWeatherLabelFromCode(current.weather_code);
+    const icon = getWeatherIcon(current.weather_code);
+    const locationName = await reverseGeocodeLocation(
+      currentLocation.latitude,
+      currentLocation.longitude
+    );
+
+    document.getElementById("homeWeatherLocation").textContent = locationName;
+    document.getElementById("homeWeatherMeta").textContent =
+      `${current.temperature_2m}°C • ${current.wind_speed_10m} km/h • ${label}`;
+    document.getElementById("homeWeatherIcon").textContent = icon;
+  } catch (error) {
+    if (
+      !featuredCampsite ||
+      !featuredCampsite.weatherEnabled ||
+      !featuredCampsite.latitude ||
+      !featuredCampsite.longitude
+    ) {
+      document.getElementById("homeWeatherLocation").textContent = "Location unavailable";
+      document.getElementById("homeWeatherMeta").textContent = "Weather unavailable";
+      return;
+    }
+
+    const weather = await fetchWeather(
+      featuredCampsite.latitude,
+      featuredCampsite.longitude
+    );
+
+    if (!weather || !weather.current) {
+      document.getElementById("homeWeatherLocation").textContent = "Location unavailable";
+      document.getElementById("homeWeatherMeta").textContent = "Weather unavailable";
+      return;
+    }
+
+    const current = weather.current;
+    const label = getWeatherLabelFromCode(current.weather_code);
+    const icon = getWeatherIcon(current.weather_code);
+
+    document.getElementById("homeWeatherLocation").textContent = featuredCampsite.name;
+    document.getElementById("homeWeatherMeta").textContent =
+      `${current.temperature_2m}°C • ${current.wind_speed_10m} km/h • ${label}`;
+    document.getElementById("homeWeatherIcon").textContent = icon;
   }
+}
 
-  const weather = await fetchWeather(featuredCampsite.latitude, featuredCampsite.longitude);
+async function reverseGeocodeLocation(latitude, longitude) {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+    );
 
-  if (!weather || !weather.current) {
-    document.getElementById("homeWeatherMeta").textContent = "Weather unavailable";
-    return;
+    const data = await response.json();
+
+    if (!response.ok || !data) {
+      return "Current Location";
+    }
+
+    const area =
+      data.address?.suburb ||
+      data.address?.city ||
+      data.address?.town ||
+      data.address?.village ||
+      data.address?.county ||
+      "Current Location";
+
+    return area;
+  } catch (error) {
+    return "Current Location";
   }
-
-  const current = weather.current;
-  const label = getWeatherLabelFromCode(current.weather_code);
-  const icon = getWeatherIcon(current.weather_code);
-
-  document.getElementById("homeWeatherLocation").textContent = featuredCampsite.name;
-  document.getElementById("homeWeatherMeta").textContent =
-    `${current.temperature_2m}°C • ${current.wind_speed_10m} km/h • ${label}`;
-  document.getElementById("homeWeatherIcon").textContent = icon;
 }
 
 document.getElementById("searchInput").addEventListener("input", loadCampsites);
