@@ -11,6 +11,35 @@ let filters = {
   parkingAvailable: false
 };
 
+function setupHomeNavMode() {
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get("mode");
+
+  const navHome = document.getElementById("navHome");
+  const navSearch = document.getElementById("navSearch");
+  const searchInput = document.getElementById("searchInput");
+
+  if (!navHome || !navSearch || !searchInput) return;
+
+  navHome.classList.remove("active");
+  navSearch.classList.remove("active");
+
+  if (mode === "search") {
+    navSearch.classList.add("active");
+
+    setTimeout(() => {
+      searchInput.focus();
+      searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      const value = searchInput.value;
+      searchInput.value = "";
+      searchInput.value = value;
+    }, 100);
+  } else {
+    navHome.classList.add("active");
+  }
+}
+
 function getFallbackETourPreviewSet(campsiteName) {
   if (!campsiteName) {
     return [
@@ -254,5 +283,6 @@ document.getElementById("clearFiltersBtn").addEventListener("click", () => {
   loadCampsites();
 });
 
+setupHomeNavMode();
 loadCampsites();
 updateNotificationBadges();
