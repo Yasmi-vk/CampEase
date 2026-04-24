@@ -1,5 +1,21 @@
 requireLogin();
 
+function getSavedFallbackImage(campsiteName, imageUrls) {
+  if (Array.isArray(imageUrls) && imageUrls.length > 0) {
+    return imageUrls[0];
+  }
+
+  const name = (campsiteName || "").toLowerCase();
+
+  if (name.includes("qudra")) return `${STATIC_BASE_URL}/etour/alqudra/1.jpg`;
+  if (name.includes("dibba")) return `${STATIC_BASE_URL}/etour/dibba/1.jpg`;
+  if (name.includes("hatta")) return `${STATIC_BASE_URL}/etour/hatta/1.jpg`;
+  if (name.includes("wadi shees") || name.includes("wadishees") || name.includes("shees")) return `${STATIC_BASE_URL}/etour/wadishees/1.jpg`;
+  if (name.includes("jebel jais") || name.includes("jebeljais") || name.includes("jais")) return `${STATIC_BASE_URL}/etour/jebeljais/1.jpg`;
+
+  return `${STATIC_BASE_URL}/etour/default/1.jpg`;
+}
+
 async function loadSavedCampsites() {
   const user = getUserSession();
   const savedList = document.getElementById("savedList");
@@ -17,11 +33,18 @@ async function loadSavedCampsites() {
 
     data.forEach(item => {
       const badgeClass = item.category ? item.category : "default";
+      const previewImage = getSavedFallbackImage(item.campsiteName, item.imageUrls);
 
       const card = document.createElement("div");
       card.className = "card campsite-card";
       card.innerHTML = `
-        <div class="campsite-thumb">Saved Campsite</div>
+        <div class="campsite-thumb">
+          ${
+            previewImage
+              ? `<img src="${previewImage}" alt="${item.campsiteName || "Saved campsite"}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" onerror="this.parentElement.textContent='Saved Campsite';" />`
+              : `Saved Campsite`
+          }
+        </div>
         <div class="badges">
           <span class="badge ${badgeClass}">${item.category || "camp"}</span>
         </div>
@@ -35,7 +58,7 @@ async function loadSavedCampsites() {
         <button class="btn btn-danger-outline remove-btn" data-campsiteid="${item.campsiteId}">Remove</button>
       `;
 
-      card.querySelector(".title-md").addEventListener("click", () => {
+      card.addEventListener("click", () => {
         window.location.href = `campsite-details.html?id=${item.campsiteId}`;
       });
 
@@ -73,3 +96,4 @@ async function removeSaved(campsiteId) {
 }
 
 loadSavedCampsites();
+updateNotificationBadges();
